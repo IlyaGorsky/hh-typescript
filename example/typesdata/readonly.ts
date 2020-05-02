@@ -5,7 +5,7 @@
  */
 interface User {
   readonly type: string;
-  name: string;
+  name?: string;
 }
 
 /**
@@ -17,6 +17,16 @@ var UserApplicant: User = {
 
 UserApplicant.type = "admin";
 
+var protectedUserApplicant: Readonly<User> = {
+  type: "applicant",
+  name: "Ilya",
+};
+
+protectedUserApplicant.name = "d";
+
+/**
+ * Readonly object all field
+ */
 var protectedUserApplicant: Readonly<User> = {
   type: "applicant",
   name: "Ilya",
