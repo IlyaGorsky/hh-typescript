@@ -1,44 +1,97 @@
-// Boolean
+/**
+ * @name Boolean
+ * @description Логическое значение true или false
+ */
 var isTrue: boolean = true;
-var isTrue: boolean = false;
 
-// String
+/**
+ * @name String
+ * @description Cтроки
+ */
 var userName: string = "";
 
-// Number
+/**
+ * @name Number
+ * @description Числовое значение
+ */
 var userId: number = 1;
 
-// Null
+/**
+ * @name Null
+ * @description Представляет собой пустое значение
+ */
 var studentInfo: null = null;
 
-// Undefined
-var react: undefined = undefined;
+/**
+ * @name Undefined
+ * @description Переменная не имеющая присвоеного значения
+ */
+var react: undefined;
+console.log(react);
 
-// Array
-var studetns: Array<string> = ["Jon", "Jane"];
-var counters: Array<number> = [1, 2, 6];
-var positive: Array<boolean> = [true, true];
-var response: Array<any> = [true, true, 3, 4, 5];
+/**
+ * @name Array
+ * @description Массивы
+ */
+var students: string[] = ["Jon", "Jane"];
+var counters: number[] = [1, 2, 6];
+var positive: boolean[] = [true, false];
 
-// Object
-var student: Object = {
+/**
+ * @name Object
+ * @description Сложная структура данных состоящия из пары ключ значение
+ */
+var student: object = {
+  id: new Date().getTime(),
   firstName: "Ilya",
   lastName: "Gorskiy",
 };
 
-// Enum
-enum frameworks {
-  Angular,
-  React,
-  Vue,
-  Svelte,
+/**
+ * @name Enum
+ * @description Набор числовых данных описанный с помощью строковых констант
+ */
+enum Frameworks {
+  Angular, // 0
+  React, // 1
+  Vue, // 2
+  Svelte, // 3
 }
+var currentFramework: string;
+currentFramework = Frameworks[Frameworks.React];
+// console.log(currentFramework)
+// Frameworks[1] --> React
 
-// --> Angular
-console.log(frameworks[0]);
+/**
+ * @name Turple
+ * @description Кортеж массивы но заране c известным набором элементов
+ */
+var userInfo: [string, number] = ["Ilya", 26];
+// var userName: string = userInfo[0];
+// var userAge: string = userInfo[1];
 
-// Turple
-var userInfo: [String, Number] = ["Ilya", 26];
+/**
+ * @name Any
+ * @description Описывает данные которые могут быть не изветсны на момент написания приложения
+ */
 
-// Any
-var data: any = [1, 2, {}, true, false];
+var someVar: any = "hello";
+// console.log(someVar); // сейчас someVar - это string
+// someVar = 20;
+// console.log(someVar); // сейчас someVar - это number
+
+/**
+ * @name Void
+ * @description Отсутввие какого либо значения
+ */
+var result: void = undefined;
+
+/**
+ * @name Never
+ * @despcription Используется в качестве возвращаемого типа функции которые генирируют ошибку
+ */
+var error = (message: string) => {
+  throw new Error(message);
+};
+
+var errorBadRequest = () => error("BadRequest");
