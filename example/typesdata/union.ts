@@ -19,23 +19,6 @@ console.log(userId);
 // userId = false;
 
 /**
- * Игральаня кость
- *
- * @name dice
- * @description Числовой литерал
- */
-var dice: 1 | 2 | 3 | 4 | 5 | 6;
-
-/**
- * Алиас для направлений
- *
- * @type Directions
- * @description С помощью оператора | можем составить алиас с перечеслением направлений
- */
-type Directions = "up" | "down" | "left" | "right";
-var whereMove: Directions = "up";
-
-/**
  * Заполняет строку слева пробелами или новой строкой
  *
  * @param value {string}
@@ -54,3 +37,73 @@ function padLeft(value: string, padding: number | string) {
 
 console.log(padLeft("Hello world", 4));
 console.log(padLeft("Hello world", " :) "));
+
+/**
+ * Игральаня кость
+ *
+ * @alias Dice
+ * @name dice
+ */
+type Dice = 1 | 2 | 3 | 4 | 5 | 6;
+
+/**
+ * Алиас для направлений
+ *
+ * @alias Directions
+ */
+type Directions = "up" | "down" | "left" | "right";
+var whereMove: Directions = "up";
+
+interface Square {
+  kind: "square";
+  size: number;
+}
+
+interface Rectangle {
+  kind: "rectangle";
+  width: number;
+  height: number;
+}
+
+interface Circle {
+  kind: "circle";
+  radius: number;
+}
+
+/**
+ * Литерал с объединением типамиинтерфейсов
+ *
+ * @name Shape
+ * @type {object}
+ */
+var Shape: Square | Rectangle | Circle;
+
+Shape = {
+  kind: "square",
+  size: 10,
+};
+
+// Shape.width;
+
+/**
+ * Алиас c объединением интерфейсов
+ * @alias Shape
+ */
+type Shape = Square | Rectangle | Circle;
+
+// const figure: Shape = {
+//   kind: "rectangle",
+//   width: 10,
+//   height: 10,
+// };
+
+// function getFigureWidth(fig: Shape): number {
+//   switch (fig.kind) {
+//     case "rectangle":
+//       return fig.width;
+//     case "circle":
+//       return fig.radius * 2;
+//     case "square":
+//       return Math.sqrt(fig.size);
+//   }
+// }
