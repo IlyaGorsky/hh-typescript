@@ -107,3 +107,69 @@ type Shape = Square | Rectangle | Circle;
 //       return Math.sqrt(fig.size);
 //   }
 // }
+
+/**
+ * Intersection types
+ * @description Пересечение типов
+ * @example Типы пересечения похожи на типы объединения, но используются для группировки не скольких типов в один общий
+ *          Для примера напишем функцию получение все избранных статей пользователя с типизируемым ответом
+ *          Ответ может быть ErrorHandling & User & ArticlesData это значит что ответ будет иметь все члены трех типов
+ *          Воспользуемся оператом & для вывода нового типа с пересчение всех объектов
+ *          UserFavoritesResponse = UserDataResponse & ArticlesDataResposne;
+ */
+
+interface ErrorHandling {
+  success: boolean;
+  error?: { message: string };
+}
+
+interface UserModel {
+  favorties: { name: string }[];
+}
+
+interface ArticlesData {
+  articles: { name: string }[];
+}
+
+type UserDataResponse = UserModel & ErrorHandling;
+type ArticlesDataResposne = ArticlesData & ErrorHandling;
+type UserFavoritesResponse = UserDataResponse & ArticlesDataResposne;
+
+function handleUserFavoritesResponse(response: UserFavoritesResponse): void {
+  if (response.error) {
+    console.log(response.error);
+    return;
+  }
+
+  const articlesByFavorite = response.favorties.filter(
+    ({ name }, index: number): boolean => {
+      const article = response.articles[index];
+      if (article && article.name) {
+        return article.name === name;
+      }
+      return false;
+    }
+  );
+
+  console.log(articlesByFavorite);
+}
+
+function getUserFavorites(): void {
+  let fetchUser = {
+    favorties: [{ name: "Lorem" }, { name: "test" }],
+  };
+
+  let fetcArticle = {
+    articles: [{ name: "Lorem" }],
+  };
+
+  let response: UserFavoritesResponse = {
+    articles: fetcArticle.articles,
+    favorties: fetchUser.favorties,
+    success: true,
+  };
+
+  handleUserFavoritesResponse(response);
+}
+
+getUserFavorites();
