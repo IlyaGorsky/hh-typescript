@@ -9,7 +9,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "npx tsc",
-    "start": "npx tsc --w"
+    "start": "npx tsc --w",
+    "declaration": "npx tsc -p declaration.tsconfig.json"
   },
   "author": "",
   "license": "ISC"

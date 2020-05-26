@@ -1,0 +1,14 @@
+{
+  "files": [
+    "./example/xhh/utils/Dates.js",
+    "./example/xhh/utils/DatesLocales.js",
+    "./example/xhh/utils/Strings.js"
+  ],
+  "compilerOptions": {
+    "declarationMap": true,
+    "allowJs": true,
+    "declaration": true,
+    "noEmit": false,
+    "emitDeclarationOnly": true
+  }
+}
