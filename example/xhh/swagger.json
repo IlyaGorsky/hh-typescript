@@ -1,0 +1,3503 @@
+{
+  "swagger": "2.0",
+  "tags": [
+    { "name": "Operations with EMPLOYER and MANAGERS" },
+    { "name": "Operations with RESUME" },
+    { "name": "Operation with Promo Actions" },
+    { "name": "Operations with NEGOTIATION TOPIC" },
+    { "name": "Operations with VACANCY" },
+    { "name": "Operations with BILLING" },
+    { "name": "Operations with USER" }
+  ],
+  "paths": {
+    "/fx/billing/bankdetail/{id}/create/bill": {
+      "post": {
+        "tags": ["Operations with BILLING"],
+        "summary": "Creates new bill",
+        "description": "Creates new bill for given bank_detail_id.",
+        "operationId": "createBill",
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Id of existing bank_detail",
+            "required": true,
+            "type": "integer",
+            "pattern": "[\\d]+",
+            "format": "int32"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "required": false,
+            "schema": { "$ref": "#/definitions/BillDto" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": { "$ref": "#/definitions/BillDto" }
+          }
+        }
+      }
+    },
+    "/fx/billing/bill/{id}/create/payment": {
+      "get": {
+        "tags": ["Operations with BILLING"],
+        "summary": "Create payment for bill",
+        "description": "Create bill payment",
+        "operationId": "createPayment",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Existed bill id to make payment for",
+            "required": true,
+            "type": "integer",
+            "pattern": "[\\d]+",
+            "format": "int32"
+          }
+        ],
+        "responses": { "default": { "description": "successful operation" } }
+      }
+    },
+    "/fx/billing/bill/{id}/pay": {
+      "get": {
+        "tags": ["Operations with BILLING"],
+        "summary": "Make payment for the bill",
+        "description": "Make payment for the bill with required hh manager and payment order number",
+        "operationId": "payBill",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Existed bill id to pay for",
+            "required": true,
+            "type": "integer",
+            "pattern": "[\\d]+",
+            "format": "int32"
+          },
+          {
+            "name": "hhManagerId",
+            "in": "query",
+            "description": "HH manager to pass bill to",
+            "required": true,
+            "type": "integer",
+            "format": "int32",
+            "x-example": 704359
+          },
+          {
+            "name": "orderNum",
+            "in": "query",
+            "description": "Payment order number",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          }
+        ],
+        "responses": { "default": { "description": "successful operation" } }
+      }
+    },
+    "/fx/billing/employer/{id}/add/money": {
+      "post": {
+        "tags": ["Operations with BILLING"],
+        "summary": "Add money to employer",
+        "description": "Add money to employer",
+        "operationId": "addMoneyToEmployer",
+        "consumes": ["application/json"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Employer id to add money to",
+            "required": true,
+            "type": "integer",
+            "pattern": "[\\d]+",
+            "format": "int32"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "required": false,
+            "schema": { "$ref": "#/definitions/PaymentDto" }
+          }
+        ],
+        "responses": { "default": { "description": "successful operation" } }
+      }
+    },
+    "/fx/billing/employer/{id}/add/service_entry": {
+      "put": {
+        "tags": ["Operations with BILLING"],
+        "summary": "Add service entries to employer",
+        "description": "Add service entries to employer",
+        "operationId": "addServiceEntriesToEmployer",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Employer id to add entries for",
+            "required": true,
+            "type": "integer",
+            "pattern": "[\\d]+",
+            "format": "int32"
+          },
+          {
+            "name": "serviceEntry",
+            "in": "query",
+            "description": "Service entry code",
+            "required": true,
+            "type": "string",
+            "x-example": "VP"
+          },
+          {
+            "name": "count",
+            "in": "query",
+            "description": "Service entry count",
+            "required": true,
+            "type": "integer",
+            "format": "int32",
+            "x-example": 1
+          }
+        ],
+        "responses": { "default": { "description": "successful operation" } }
+      }
+    },
+    "/fx/billing/employer/{id}/add/service_type": {
+      "post": {
+        "tags": ["Operations with BILLING"],
+        "summary": "Add service type to employer",
+        "description": "Add service type to employer",
+        "operationId": "addServiceTypeToEmployer",
+        "consumes": ["application/json"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Employer id to add service type for",
+            "required": true,
+            "type": "integer",
+            "pattern": "[\\d]+",
+            "format": "int32"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "required": false,
+            "schema": { "$ref": "#/definitions/ServiceTypeDto" }
+          }
+        ],
+        "responses": { "default": { "description": "successful operation" } }
+      }
+    },
+    "/fx/billing/employer/{id}/digest": {
+      "get": {
+        "tags": ["Operations with BILLING"],
+        "summary": "Get employer digest",
+        "description": "Get employer digest",
+        "operationId": "getDigest",
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Employer id for whom to get digest for",
+            "required": true,
+            "type": "integer",
+            "pattern": "[\\d]+",
+            "format": "int32"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": { "$ref": "#/definitions/NewAccountDto" }
+          }
+        }
+      }
+    },
+    "/fx/billing/employer/{id}/undo/service": {
+      "put": {
+        "tags": ["Operations with BILLING"],
+        "summary": "Undo employer services",
+        "description": "Undo employer services. We can undo multiple services at once by collecting them with ',' as delimiter.\n Example: VPP,RFPN - will undo both, REGIONAL_FREE and UNLIMITED_PUBLICATIONS",
+        "operationId": "undoEmployerServices",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Employer id to undo services for",
+            "required": true,
+            "type": "integer",
+            "pattern": "[\\d]+",
+            "format": "int32"
+          },
+          {
+            "name": "services",
+            "in": "query",
+            "description": "Service code. Multiple codes type with delimiter ','",
+            "required": true,
+            "type": "string",
+            "x-example": "FA+VPP"
+          }
+        ],
+        "responses": { "default": { "description": "successful operation" } }
+      }
+    },
+    "/fx/billing/employer/{id}create/payer": {
+      "post": {
+        "tags": ["Operations with BILLING"],
+        "summary": "Create payer data for employer",
+        "description": "Filling employer bank details, billing address information, agreement ids and other payer information.",
+        "operationId": "createPayer",
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Existed employer id",
+            "required": true,
+            "type": "integer",
+            "pattern": "[\\d]+",
+            "format": "int32"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "required": false,
+            "schema": { "$ref": "#/definitions/PayerDto" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": { "$ref": "#/definitions/PayerDto" }
+          }
+        }
+      }
+    },
+    "/fx/billing/payer/{id}/create/agreement": {
+      "post": {
+        "tags": ["Operations with BILLING"],
+        "summary": "Creates new agreement",
+        "description": "Creates new agreement for given payerId",
+        "operationId": "createAgreement",
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Id of existing payer",
+            "required": true,
+            "type": "integer",
+            "pattern": "[\\d]+",
+            "format": "int32"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "required": false,
+            "schema": { "$ref": "#/definitions/AgreementDto" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": { "$ref": "#/definitions/AgreementDto" }
+          }
+        }
+      }
+    },
+    "/fx/billing/payer/{id}/create/bank_detail": {
+      "post": {
+        "tags": ["Operations with BILLING"],
+        "summary": "Creates new bank_detail",
+        "description": "Creates new bank_detail for given payer_id.",
+        "operationId": "createBankDetail",
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Id of existing payer",
+            "required": true,
+            "type": "integer",
+            "pattern": "[\\d]+",
+            "format": "int32"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "required": false,
+            "schema": { "$ref": "#/definitions/BankDetailDto" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": { "$ref": "#/definitions/BankDetailDto" }
+          }
+        }
+      }
+    },
+    "/fx/employer/applicant_comment": {
+      "post": {
+        "tags": ["Operations with EMPLOYER and MANAGERS"],
+        "summary": "Create applicant comment",
+        "description": "Add comment about applicant",
+        "operationId": "createApplicantComment",
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "required": false,
+            "schema": { "$ref": "#/definitions/ApplicantCommentDto" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": { "$ref": "#/definitions/ApplicantCommentDto" }
+          }
+        }
+      }
+    },
+    "/fx/employer/create": {
+      "post": {
+        "tags": ["Operations with EMPLOYER and MANAGERS"],
+        "summary": "Create employer [BATCH]",
+        "description": "Create employer",
+        "operationId": "createEmployer",
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "required": false,
+            "schema": { "$ref": "#/definitions/EmployerDto" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": { "$ref": "#/definitions/EmployerDto" }
+          }
+        }
+      }
+    },
+    "/fx/employer/folder/add/resume": {
+      "post": {
+        "tags": ["Operations with EMPLOYER and MANAGERS"],
+        "summary": "Add resume to folder",
+        "description": "Add resume to existed folder",
+        "operationId": "addResumeToFolder",
+        "consumes": ["application/json"],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "required": false,
+            "schema": { "$ref": "#/definitions/FolderDto" }
+          }
+        ],
+        "responses": { "default": { "description": "successful operation" } }
+      }
+    },
+    "/fx/employer/manager/{ManagerId}/assign_to/{EmployerId}": {
+      "put": {
+        "tags": ["Operations with EMPLOYER and MANAGERS"],
+        "summary": "Assign manager to employer",
+        "description": "Assign manager to employer",
+        "operationId": "assignManagerToEmployer",
+        "parameters": [
+          {
+            "name": "ManagerId",
+            "in": "path",
+            "description": "Manager id to assign to employer",
+            "required": true,
+            "type": "integer",
+            "pattern": "[\\d]+",
+            "format": "int32"
+          },
+          {
+            "name": "EmployerId",
+            "in": "path",
+            "description": "Employer id for manager assign",
+            "required": true,
+            "type": "integer",
+            "pattern": "[\\d]+",
+            "format": "int32"
+          }
+        ],
+        "responses": { "default": { "description": "successful operation" } }
+      }
+    },
+    "/fx/employer/manager/{ManagerId}/implant_to/{EmployerId}": {
+      "post": {
+        "tags": ["Operations with EMPLOYER and MANAGERS"],
+        "summary": "Implant manager to employer",
+        "description": "Implant manager to employer",
+        "operationId": "implantEmployerManager",
+        "consumes": ["application/json"],
+        "parameters": [
+          {
+            "name": "ManagerId",
+            "in": "path",
+            "description": "Manager id to be implanted",
+            "required": true,
+            "type": "integer",
+            "pattern": "[\\d]+",
+            "format": "int32"
+          },
+          {
+            "name": "EmployerId",
+            "in": "path",
+            "description": "Employer id",
+            "required": true,
+            "type": "integer",
+            "pattern": "[\\d]+",
+            "format": "int32"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": { "type": "integer", "format": "int32" }
+          }
+        }
+      }
+    },
+    "/fx/employer/manager/{ManagerId}/negotiations_statistics": {
+      "post": {
+        "tags": ["Operations with EMPLOYER and MANAGERS"],
+        "summary": "Add employer manager statistics for some day",
+        "description": "The method add statistics and mark it as calculated",
+        "operationId": "addEmployerManagerNegotiationStatistics",
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "name": "ManagerId",
+            "in": "path",
+            "description": "Manager id, to which we add the statistics",
+            "required": true,
+            "type": "integer",
+            "pattern": "[\\d]+",
+            "format": "int32"
+          },
+          {
+            "name": "responsesReceived",
+            "in": "formData",
+            "description": "Received responses amount for this manager",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "responsesRead",
+            "in": "formData",
+            "description": "Read responses amount for this manager",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "responsesReplied",
+            "in": "formData",
+            "description": "Replied responses amount for this manager",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "responsesTotalReplyTimeHours",
+            "in": "formData",
+            "description": "Responses total reply time for this manager",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "daysBefore",
+            "in": "formData",
+            "description": "The day of this statistics (as days before today)",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          }
+        ],
+        "responses": { "default": { "description": "successful operation" } }
+      }
+    },
+    "/fx/employer/manager/{ManagerId}/premoderate/{VacancyId}": {
+      "post": {
+        "tags": ["Operations with EMPLOYER and MANAGERS"],
+        "summary": "Set pre moderation status for existed vacancy",
+        "description": "Pre moderate existed vacancy",
+        "operationId": "premoderateVacancy",
+        "consumes": ["application/json"],
+        "parameters": [
+          {
+            "name": "ManagerId",
+            "in": "path",
+            "description": "Manager id, which should make the moderation. It must be one of managers that was set to moderate the manager that created the vacancy.",
+            "required": true,
+            "type": "integer",
+            "pattern": "[\\d]+",
+            "format": "int32"
+          },
+          {
+            "name": "VacancyId",
+            "in": "path",
+            "description": "Vacancy id that need to be updated",
+            "required": true,
+            "type": "integer",
+            "pattern": "[\\d]+",
+            "format": "int32"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Set moderation status and comment",
+            "required": true,
+            "schema": { "$ref": "#/definitions/PremoderationStatusDto" }
+          }
+        ],
+        "responses": { "default": { "description": "successful operation" } }
+      }
+    },
+    "/fx/employer/manager/{id}/add/address": {
+      "post": {
+        "tags": ["Operations with EMPLOYER and MANAGERS"],
+        "summary": "Add address to employer manager",
+        "description": "Add employer address with manager",
+        "operationId": "addAddressToEmployerManager",
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Employer manager id the address will be add to",
+            "required": true,
+            "type": "integer",
+            "pattern": "[\\d]+",
+            "format": "int32"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "required": false,
+            "schema": { "$ref": "#/definitions/AddressDto" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": { "$ref": "#/definitions/AddressDto" }
+          }
+        }
+      }
+    },
+    "/fx/employer/manager/{id}/add/folder": {
+      "post": {
+        "tags": ["Operations with EMPLOYER and MANAGERS"],
+        "summary": "Create resume folder",
+        "description": "Create resume folder for manager. If folder dto contains resume id's, they will be added to folder",
+        "operationId": "createResumeFolder",
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Employer manager id folder will be add to",
+            "required": true,
+            "type": "integer",
+            "pattern": "[\\d]+",
+            "format": "int32"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "required": false,
+            "schema": { "$ref": "#/definitions/FolderDto" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": { "$ref": "#/definitions/FolderDto" }
+          }
+        }
+      }
+    },
+    "/fx/employer/manager/{id}/quota": {
+      "put": {
+        "tags": ["Operations with EMPLOYER and MANAGERS"],
+        "summary": "Set employer manager quota",
+        "description": "Set employer manager quota",
+        "operationId": "setEmployerManagerQuota",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Employer manager id quota will be add",
+            "required": true,
+            "type": "integer",
+            "pattern": "[\\d]+",
+            "format": "int32"
+          },
+          {
+            "name": "entry",
+            "in": "query",
+            "description": "Entry name that need to be set",
+            "required": true,
+            "type": "string",
+            "x-example": "VP"
+          },
+          {
+            "name": "quota",
+            "in": "query",
+            "description": "Quota number",
+            "required": true,
+            "type": "integer",
+            "format": "int32",
+            "x-example": 0
+          }
+        ],
+        "responses": { "default": { "description": "successful operation" } }
+      }
+    },
+    "/fx/employer/manager/{id}/to/manager/permissions": {
+      "put": {
+        "tags": ["Operations with EMPLOYER and MANAGERS"],
+        "summary": "Set manager to manager permissions",
+        "description": "Set manager to manager permissions",
+        "operationId": "setManagerToManagerPermissions",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Permission owner manager id",
+            "required": true,
+            "type": "integer",
+            "pattern": "[\\d]+",
+            "format": "int32"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "required": false,
+            "schema": { "$ref": "#/definitions/ManagerToManagerPermissionsDto" }
+          }
+        ],
+        "responses": { "default": { "description": "successful operation" } }
+      }
+    },
+    "/fx/employer/manager/{manager_id}/changeaccesstype/folder/{folder_id}": {
+      "put": {
+        "tags": ["Operations with EMPLOYER and MANAGERS"],
+        "summary": "Change folder access type",
+        "description": "Change folder access type",
+        "operationId": "changeFolderAccessType",
+        "parameters": [
+          {
+            "name": "manager_id",
+            "in": "path",
+            "description": "Employer manager id folder will be changed access type",
+            "required": true,
+            "type": "integer",
+            "pattern": "[\\d]+",
+            "format": "int32"
+          },
+          {
+            "name": "folder_id",
+            "in": "path",
+            "description": "Folder id",
+            "required": true,
+            "type": "integer",
+            "pattern": "[\\d]+",
+            "format": "int32"
+          },
+          {
+            "name": "accessType",
+            "in": "query",
+            "description": "Access type",
+            "required": true,
+            "type": "string",
+            "enum": ["OWNER_ONLY", "EVERYONE", "SELECTED_MANAGERS"]
+          },
+          {
+            "name": "employerManagerId",
+            "in": "query",
+            "description": "Managers id",
+            "required": false,
+            "type": "array",
+            "items": { "type": "integer", "format": "int32" },
+            "collectionFormat": "multi"
+          }
+        ],
+        "responses": { "default": { "description": "successful operation" } }
+      }
+    },
+    "/fx/employer/manager/{manager_id}/folder/{folder_id}": {
+      "delete": {
+        "tags": ["Operations with EMPLOYER and MANAGERS"],
+        "summary": "Delete resume folder",
+        "description": "Delete resume folder for manager. ",
+        "operationId": "deleteResumeFolder",
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "name": "manager_id",
+            "in": "path",
+            "description": "Employer manager id folder will be delete to",
+            "required": true,
+            "type": "integer",
+            "pattern": "[\\d]+",
+            "format": "int32"
+          },
+          {
+            "name": "folder_id",
+            "in": "path",
+            "description": "Folder id",
+            "required": true,
+            "type": "integer",
+            "pattern": "[\\d]+",
+            "format": "int32"
+          }
+        ],
+        "responses": { "default": { "description": "successful operation" } }
+      }
+    },
+    "/fx/employer/user/{manager_user_id}/pushsubscriptions/own_vacancies": {
+      "get": {
+        "tags": ["Operations with EMPLOYER and MANAGERS"],
+        "summary": "Get manager global subscriptions",
+        "operationId": "getManagerDefaultSubscriptions",
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "name": "manager_user_id",
+            "in": "path",
+            "description": "Employer manager user id",
+            "required": true,
+            "type": "integer",
+            "pattern": "[\\d]+",
+            "format": "int32"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/EmployerManagerDefaultPushSubscriptionsDto"
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": ["Operations with EMPLOYER and MANAGERS"],
+        "summary": "Set manager global subscriptions",
+        "operationId": "setManagerDefaultSubscriptions",
+        "parameters": [
+          {
+            "name": "manager_user_id",
+            "in": "path",
+            "description": "Employer manager user id",
+            "required": true,
+            "type": "integer",
+            "pattern": "[\\d]+",
+            "format": "int32"
+          },
+          {
+            "name": "subscription",
+            "in": "formData",
+            "description": "List of subscriptions to set",
+            "required": true,
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": ["NEW_RESPONSE", "NEW_INBOX"]
+            },
+            "collectionFormat": "multi"
+          }
+        ],
+        "responses": { "default": { "description": "successful operation" } }
+      }
+    },
+    "/fx/employer/user/{manager_user_id}/pushsubscriptions/vacancy": {
+      "get": {
+        "tags": ["Operations with EMPLOYER and MANAGERS"],
+        "summary": "Get manager vacancies subscriptions",
+        "operationId": "getManagerVacanciesSubscriptions",
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "name": "manager_user_id",
+            "in": "path",
+            "description": "Employer manager user id",
+            "required": true,
+            "type": "integer",
+            "pattern": "[\\d]+",
+            "format": "int32"
+          },
+          {
+            "name": "id",
+            "in": "query",
+            "description": "Vacancy ids",
+            "required": true,
+            "type": "array",
+            "items": { "type": "integer", "format": "int32" },
+            "collectionFormat": "multi"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/EmployerManagerVacanciesPushSubscriptionsDto"
+            }
+          }
+        }
+      }
+    },
+    "/fx/employer/user/{manager_user_id}/pushsubscriptions/vacancy/{vacancy_id}/{state}": {
+      "post": {
+        "tags": ["Operations with EMPLOYER and MANAGERS"],
+        "summary": "Set vacancy subscriptions with state",
+        "operationId": "setManagerVacancySubscriptions",
+        "parameters": [
+          {
+            "name": "manager_user_id",
+            "in": "path",
+            "description": "Employer manager user id",
+            "required": true,
+            "type": "integer",
+            "pattern": "[\\d]+",
+            "format": "int32"
+          },
+          {
+            "name": "vacancy_id",
+            "in": "path",
+            "description": "Vacancy id",
+            "required": true,
+            "type": "integer",
+            "pattern": "[\\d]+",
+            "format": "int32"
+          },
+          {
+            "name": "state",
+            "in": "path",
+            "description": "State to set",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "subscription",
+            "in": "formData",
+            "description": "Subscriptions types to add",
+            "required": true,
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": ["NEW_RESPONSE", "NEW_INBOX"]
+            },
+            "collectionFormat": "multi"
+          }
+        ],
+        "responses": { "default": { "description": "successful operation" } }
+      }
+    },
+    "/fx/employer/{id}/add/department": {
+      "post": {
+        "tags": ["Operations with EMPLOYER and MANAGERS"],
+        "summary": "Add department to employer",
+        "description": "Add department to employer",
+        "operationId": "addDepartmentToEmployer",
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Employer id to add department to",
+            "required": true,
+            "type": "integer",
+            "pattern": "[\\d]+",
+            "format": "int32"
+          },
+          {
+            "name": "deptName",
+            "in": "query",
+            "description": "Department name",
+            "required": true,
+            "type": "string",
+            "x-example": "Технический департамент"
+          },
+          {
+            "name": "deptCode",
+            "in": "query",
+            "description": "Department code",
+            "required": true,
+            "type": "string",
+            "x-example": "TECH"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": { "$ref": "#/definitions/DepartmentDto" }
+          }
+        }
+      }
+    },
+    "/fx/employer/{id}/add/test": {
+      "post": {
+        "tags": ["Operations with EMPLOYER and MANAGERS"],
+        "summary": "Add test to employer",
+        "description": "Add test that will be used by employer",
+        "operationId": "addTestToEmployer",
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Employer id to add test to",
+            "required": true,
+            "type": "integer",
+            "pattern": "[\\d]+",
+            "format": "int32"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "required": false,
+            "schema": { "$ref": "#/definitions/TestOfEmployerDto" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": { "$ref": "#/definitions/TestOfEmployerDto" }
+          }
+        }
+      }
+    },
+    "/fx/employer/{id}/create/manager": {
+      "post": {
+        "tags": ["Operations with EMPLOYER and MANAGERS"],
+        "summary": "Create employer manager [BATCH]",
+        "description": "Create manager for employer",
+        "operationId": "createEmployerManager",
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Employer id to create manager to",
+            "required": true,
+            "type": "integer",
+            "pattern": "[\\d]+",
+            "format": "int32"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "required": false,
+            "schema": { "$ref": "#/definitions/EmployerManagerDto" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": { "$ref": "#/definitions/EmployerManagerDto" }
+          }
+        }
+      }
+    },
+    "/fx/employer/{id}/industries": {
+      "put": {
+        "tags": ["Operations with EMPLOYER and MANAGERS"],
+        "summary": "Set industries to employer",
+        "description": "Set industries to employer. Industries must be split with ',' as delimiter.",
+        "operationId": "setIndustries",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Employer id to set industries for",
+            "required": true,
+            "type": "integer",
+            "pattern": "[\\d]+",
+            "format": "int32"
+          },
+          {
+            "name": "industries",
+            "in": "query",
+            "description": "Industries names. Industries must be split with ', as delimiter'",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": { "default": { "description": "successful operation" } }
+      }
+    },
+    "/fx/employer/{id}/structure/name/{name}": {
+      "put": {
+        "tags": ["Operations with EMPLOYER and MANAGERS"],
+        "summary": "Set employer structure name",
+        "description": "Set employer structure name",
+        "operationId": "setStructureName",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Employer id to set structure name to",
+            "required": true,
+            "type": "integer",
+            "pattern": "[\\d]+",
+            "format": "int32"
+          },
+          {
+            "name": "name",
+            "in": "path",
+            "description": "Structure name",
+            "required": true,
+            "type": "string",
+            "x-example": "#str#"
+          }
+        ],
+        "responses": { "default": { "description": "successful operation" } }
+      }
+    },
+    "/fx/employer/{id}/vacancy_premoderation": {
+      "put": {
+        "tags": ["Operations with EMPLOYER and MANAGERS"],
+        "operationId": "vacancyPremoderation",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Employer id to create manager to",
+            "required": true,
+            "type": "integer",
+            "pattern": "[\\d]+",
+            "format": "int32"
+          },
+          {
+            "name": "enable",
+            "in": "query",
+            "description": "enable or disable vacancy premoderation",
+            "required": true,
+            "type": "boolean"
+          }
+        ],
+        "responses": { "default": { "description": "successful operation" } }
+      }
+    },
+    "/fx/employer/{manager_id}/count_operations": {
+      "get": {
+        "tags": ["Operations with EMPLOYER and MANAGERS"],
+        "summary": "Check manager pending operations",
+        "operationId": "countOperationsForTargetManager",
+        "parameters": [
+          {
+            "name": "manager_id",
+            "in": "path",
+            "description": "Employer manager id",
+            "required": true,
+            "type": "integer",
+            "pattern": "[\\d]+",
+            "format": "int32"
+          }
+        ],
+        "responses": { "default": { "description": "successful operation" } }
+      }
+    },
+    "/fx/negotiation": {
+      "post": {
+        "tags": ["Operations with NEGOTIATION TOPIC"],
+        "summary": "Create topic",
+        "description": "Create a new negotiation topic for resume and vacancy either by employer or applicant",
+        "operationId": "create",
+        "produces": ["text/plain"],
+        "parameters": [
+          {
+            "name": "vacancyId",
+            "in": "query",
+            "description": "Vacancy id to create topic for",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "resumeId",
+            "in": "query",
+            "description": "Resume id to create topic for",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "action",
+            "in": "query",
+            "description": "Action to perform for topic creation (response, phone interview etc.)",
+            "required": true,
+            "type": "string",
+            "enum": [
+              "RESPONSE",
+              "CONSIDER",
+              "PHONE_INTERVIEW",
+              "ASSESSMENT",
+              "INTERVIEW",
+              "OFFER",
+              "HIRED",
+              "DISCARD_BY_EMPLOYER",
+              "MARK_READ_BY_EMPLOYER",
+              "INBOX_EMPLOYER",
+              "INBOX_APPLICANT"
+            ],
+            "x-example": "RESPONSE"
+          },
+          {
+            "name": "text",
+            "in": "formData",
+            "description": "Optional response letter or invitation text",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "creationTime",
+            "in": "formData",
+            "description": "Optional topic creation time. Not supported for RESPONSE action",
+            "required": false,
+            "type": "string",
+            "x-example": "#dt#"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": { "type": "string" }
+          }
+        }
+      }
+    },
+    "/fx/negotiation/{topicId}": {
+      "post": {
+        "tags": ["Operations with NEGOTIATION TOPIC"],
+        "summary": "Change topic",
+        "description": "Post a change to existing topic. May be state change or inbox",
+        "operationId": "change",
+        "parameters": [
+          {
+            "name": "topicId",
+            "in": "path",
+            "description": "Topic id",
+            "required": true,
+            "type": "integer",
+            "pattern": "\\d+",
+            "format": "int64"
+          },
+          {
+            "name": "vacancyId",
+            "in": "query",
+            "description": "Vacancy id. If both vacancy and resume ids provided, fixture app will skip loading topic info",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "resumeId",
+            "in": "query",
+            "description": "Resume id. If both vacancy and resume ids provided, fixture app will skip loading topic info",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "action",
+            "in": "query",
+            "description": "Action to perform for topic change (interview, applicant/employer inbox etc.)",
+            "required": true,
+            "type": "string",
+            "enum": [
+              "RESPONSE",
+              "CONSIDER",
+              "PHONE_INTERVIEW",
+              "ASSESSMENT",
+              "INTERVIEW",
+              "OFFER",
+              "HIRED",
+              "DISCARD_BY_EMPLOYER",
+              "MARK_READ_BY_EMPLOYER",
+              "INBOX_EMPLOYER",
+              "INBOX_APPLICANT"
+            ],
+            "x-example": "INTERVIEW"
+          },
+          {
+            "name": "text",
+            "in": "formData",
+            "description": "Optional invitation, discard or inbox text",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "changeTime",
+            "in": "formData",
+            "description": "Optional topic change time. Not supported for RESPONSE action",
+            "required": false,
+            "type": "string",
+            "x-example": "#dt#"
+          }
+        ],
+        "responses": { "default": { "description": "successful operation" } }
+      }
+    },
+    "/fx/promovacancies/create": {
+      "post": {
+        "tags": ["Operation with Promo Actions"],
+        "operationId": "create",
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "required": false,
+            "schema": { "$ref": "#/definitions/PromoVacancyActionDto" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": { "type": "integer", "format": "int32" }
+          }
+        }
+      }
+    },
+    "/fx/promovacancies/update_employer/{id}": {
+      "post": {
+        "tags": ["Operation with Promo Actions"],
+        "operationId": "update",
+        "consumes": ["application/json"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "pattern": "[\\d]+",
+            "format": "int32"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": { "type": "integer", "format": "int32" }
+            }
+          }
+        ],
+        "responses": { "default": { "description": "successful operation" } }
+      }
+    },
+    "/fx/resume/create": {
+      "post": {
+        "tags": ["Operations with RESUME"],
+        "summary": "Create resume for applicant [BATCH]",
+        "description": "Create resume for applicant",
+        "operationId": "createResume",
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "name": "login",
+            "in": "query",
+            "description": "Applicant login/email to make resume for",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "required": false,
+            "schema": { "$ref": "#/definitions/ResumeDto" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": { "$ref": "#/definitions/ResumeDto" }
+          }
+        }
+      }
+    },
+    "/fx/resume/get/by": {
+      "get": {
+        "tags": ["Operations with RESUME"],
+        "summary": "Retrieve resume by param",
+        "description": "Get resume by one of the parameters",
+        "operationId": "getResumeBy",
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "query",
+            "description": "Resume id",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "login",
+            "in": "query",
+            "description": "First resume of applicant",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "hash",
+            "in": "query",
+            "description": "Resume hash",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": { "$ref": "#/definitions/ResumeDto" }
+          }
+        }
+      }
+    },
+    "/fx/resume/get/by/{hash}": {
+      "get": {
+        "tags": ["Operations with RESUME"],
+        "summary": "Find resume id by hash",
+        "description": "Find resume id by hash",
+        "operationId": "getResumeIdByHash",
+        "parameters": [
+          {
+            "name": "hash",
+            "in": "path",
+            "description": "Hash of resume to look for",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": { "type": "string" }
+          }
+        }
+      }
+    },
+    "/fx/resume/hash": {
+      "get": {
+        "tags": ["Operations with RESUME"],
+        "summary": "return resume hash",
+        "operationId": "getHash",
+        "parameters": [
+          {
+            "name": "resumeId",
+            "in": "query",
+            "description": "Resume id",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "resumeHash",
+            "in": "query",
+            "description": "Resume hash",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "employerId",
+            "in": "query",
+            "description": "Employer id",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "hashType",
+            "in": "query",
+            "description": "Hash type",
+            "required": true,
+            "type": "string",
+            "enum": ["EMPLOYER", "AUTHOR", "ANONYMOUS"]
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": { "type": "string" }
+          }
+        }
+      }
+    },
+    "/fx/resume/update": {
+      "post": {
+        "tags": ["Operations with RESUME"],
+        "summary": "Update existed resume",
+        "description": "Update existed resume",
+        "operationId": "updateResume",
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "required": false,
+            "schema": { "$ref": "#/definitions/ResumeDto" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": { "$ref": "#/definitions/ResumeDto" }
+          }
+        }
+      }
+    },
+    "/fx/resume/{id}": {
+      "delete": {
+        "tags": ["Operations with RESUME"],
+        "summary": "Delete existed resume",
+        "description": "Set existed resume status to DELETE",
+        "operationId": "deleteResume",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Resume id that need to be deleted",
+            "required": true,
+            "type": "integer",
+            "pattern": "[\\d]+",
+            "format": "int32"
+          }
+        ],
+        "responses": { "default": { "description": "successful operation" } }
+      }
+    },
+    "/fx/resume/{id}/approve": {
+      "put": {
+        "tags": ["Operations with RESUME"],
+        "summary": "Approve existed resume",
+        "description": "Set existed resume status to APPROVED",
+        "operationId": "approveResume",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Resume id that need to be approved",
+            "required": true,
+            "type": "integer",
+            "pattern": "[\\d]+",
+            "format": "int32"
+          }
+        ],
+        "responses": { "default": { "description": "successful operation" } }
+      }
+    },
+    "/fx/resume/{id}/block": {
+      "put": {
+        "tags": ["Operations with RESUME"],
+        "summary": "Block existed resume",
+        "description": "Set existed resume status to BLOCKED",
+        "operationId": "blockResume",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Resume id that need to be blocked",
+            "required": true,
+            "type": "integer",
+            "pattern": "[\\d]+",
+            "format": "int32"
+          }
+        ],
+        "responses": { "default": { "description": "successful operation" } }
+      }
+    },
+    "/fx/resume/{id}/keySkill/endorsement/add": {
+      "put": {
+        "tags": ["Operations with RESUME"],
+        "summary": "Add key skill endorsement",
+        "description": "Add key skill to resume with another user",
+        "operationId": "addKeySkillEndorsement",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Resume id the skill need to be add to",
+            "required": true,
+            "type": "integer",
+            "pattern": "[\\d]+",
+            "format": "int32"
+          },
+          {
+            "name": "skillId",
+            "in": "query",
+            "description": "Skill id that need to be added",
+            "required": true,
+            "type": "integer",
+            "format": "int32",
+            "x-example": 674
+          },
+          {
+            "name": "userId",
+            "in": "query",
+            "description": "User id from whom the skill will be added",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          }
+        ],
+        "responses": { "default": { "description": "successful operation" } }
+      }
+    },
+    "/fx/resume/{id}/mark": {
+      "put": {
+        "tags": ["Operations with RESUME"],
+        "summary": "Activate resume mark",
+        "description": "Activate or change resume mark expiration date",
+        "operationId": "activateResumeMark",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Resume id mark date will be activated or changed",
+            "required": true,
+            "type": "integer",
+            "pattern": "[\\d]+",
+            "format": "int32"
+          },
+          {
+            "name": "date",
+            "in": "query",
+            "description": "Renewal expiration date. Default will activate renewal.",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "responses": { "default": { "description": "successful operation" } }
+      }
+    },
+    "/fx/resume/{id}/register/visit": {
+      "put": {
+        "tags": ["Operations with RESUME"],
+        "summary": "Register resume visit",
+        "description": "Create visit of employer, from vacancy, to applicant resume",
+        "operationId": "registerResumeVisit",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Resume id where will be add visit",
+            "required": true,
+            "type": "integer",
+            "pattern": "[\\d]+",
+            "format": "int32"
+          },
+          {
+            "name": "userId",
+            "in": "query",
+            "description": "Employer main contact person id that make visit",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "employerId",
+            "in": "query",
+            "description": "Employer id that visit is made from",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "vacancyId",
+            "in": "query",
+            "description": "Vacancy id the visit been made from",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "dateOfVisit",
+            "in": "query",
+            "description": "Date when visit was made",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "responses": { "default": { "description": "successful operation" } }
+      }
+    },
+    "/fx/resume/{id}/renewal": {
+      "put": {
+        "tags": ["Operations with RESUME"],
+        "summary": "Activate resume renewal",
+        "description": "Activate or change resume renewal expiration date",
+        "operationId": "resumeRenewal",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Resume id renewal date will be activated or changed",
+            "required": true,
+            "type": "integer",
+            "pattern": "[\\d]+",
+            "format": "int32"
+          },
+          {
+            "name": "date",
+            "in": "query",
+            "description": "Renewal expiration date. Default will activate renewal.",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "responses": { "default": { "description": "successful operation" } }
+      }
+    },
+    "/fx/resume/{id}/{listType}": {
+      "get": {
+        "tags": ["Operations with RESUME"],
+        "summary": "Retrieve resume visibility list",
+        "description": "Retrieve resume visibility list",
+        "operationId": "getVisibilityList",
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Resume id",
+            "required": true,
+            "type": "integer",
+            "pattern": "[\\d]+",
+            "format": "int32"
+          },
+          {
+            "name": "listType",
+            "in": "path",
+            "description": "Visibility list type",
+            "required": true,
+            "type": "string",
+            "pattern": "whitelist|blacklist",
+            "enum": ["blacklist", "whitelist"],
+            "x-example": "whitelist"
+          }
+        ],
+        "responses": { "default": { "description": "successful operation" } }
+      },
+      "put": {
+        "tags": ["Operations with RESUME"],
+        "summary": "Replace resume visibility list",
+        "description": "Replace resume visibility list",
+        "operationId": "putVisibilityList",
+        "consumes": ["application/json"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Resume id",
+            "required": true,
+            "type": "integer",
+            "pattern": "[\\d]+",
+            "format": "int32"
+          },
+          {
+            "name": "listType",
+            "in": "path",
+            "description": "Visibility list type",
+            "required": true,
+            "type": "string",
+            "pattern": "whitelist|blacklist",
+            "enum": ["blacklist", "whitelist"],
+            "x-example": "whitelist"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": { "type": "integer", "format": "int32" }
+            }
+          }
+        ],
+        "responses": { "default": { "description": "successful operation" } }
+      }
+    },
+    "/fx/user/create": {
+      "post": {
+        "tags": ["Operations with USER"],
+        "summary": "Create user [BATCH]",
+        "description": "Create new user",
+        "operationId": "createUser",
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "required": false,
+            "schema": { "$ref": "#/definitions/UserDto" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": { "$ref": "#/definitions/UserDto" }
+          }
+        }
+      }
+    },
+    "/fx/user/get": {
+      "get": {
+        "tags": ["Operations with USER"],
+        "summary": "Get user data by email",
+        "description": "Return user data with requested email",
+        "operationId": "getUserByEmail",
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "name": "email",
+            "in": "query",
+            "description": "Find user with email",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": { "$ref": "#/definitions/UserDto" }
+          }
+        }
+      }
+    },
+    "/fx/user/personal_manager": {
+      "post": {
+        "tags": ["Operations with USER"],
+        "summary": "Create personal manager",
+        "description": "Create user with type BACK_OFFICE_USER and group id's",
+        "operationId": "createPersonalManager",
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "required": false,
+            "schema": { "$ref": "#/definitions/PersonalManagerDto" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": { "$ref": "#/definitions/PersonalManagerDto" }
+          }
+        }
+      }
+    },
+    "/fx/user/{id}/add/artifacts": {
+      "post": {
+        "tags": ["Operations with USER"],
+        "summary": "Add artifacts to user gallery",
+        "description": "Add artifacts to user gallery Artifacts must be compressed with base64",
+        "operationId": "addUserArtifacts",
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "User id that we want to add artifacts.",
+            "required": true,
+            "type": "integer",
+            "pattern": "[\\d]+",
+            "format": "int32"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "required": false,
+            "schema": { "$ref": "#/definitions/GalleryDto" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": { "$ref": "#/definitions/GalleryDto" }
+          }
+        }
+      }
+    },
+    "/fx/user/{id}/addPhone": {
+      "post": {
+        "tags": ["Operations with USER"],
+        "summary": "Add phone",
+        "description": "Add phone",
+        "operationId": "addPhone",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "User id which add phone",
+            "required": true,
+            "type": "integer",
+            "pattern": "[\\d]+",
+            "format": "int32"
+          },
+          {
+            "name": "phone",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "responses": { "default": { "description": "successful operation" } }
+      }
+    },
+    "/fx/user/{id}/block": {
+      "post": {
+        "tags": ["Operations with USER"],
+        "summary": "Block user",
+        "description": "Block user",
+        "operationId": "blockUser",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "User's id which be blocked.",
+            "required": true,
+            "type": "integer",
+            "pattern": "[\\d]+",
+            "format": "int32"
+          }
+        ],
+        "responses": { "default": { "description": "successful operation" } }
+      }
+    },
+    "/fx/user/{id}/daysoff": {
+      "put": {
+        "tags": ["Operations with USER"],
+        "summary": "Set back office user days off",
+        "description": "Setting back office user from-to days off",
+        "operationId": "setBackofficeUserDaysOff",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Back office user id",
+            "required": true,
+            "type": "integer",
+            "pattern": "[\\d]+",
+            "format": "int32"
+          },
+          {
+            "name": "from",
+            "in": "query",
+            "description": "Days off start date",
+            "required": true,
+            "type": "string",
+            "x-example": "#dt#"
+          },
+          {
+            "name": "to",
+            "in": "query",
+            "description": "Days off end date",
+            "required": true,
+            "type": "string",
+            "x-example": "#dt#"
+          }
+        ],
+        "responses": { "default": { "description": "successful operation" } }
+      }
+    },
+    "/fx/user/{id}/get/artifacts": {
+      "get": {
+        "tags": ["Operations with USER"],
+        "summary": "Get all user artifacts",
+        "description": "Get artifacts from user galleryArtifacts are compressed with base64",
+        "operationId": "getUserArtifacts",
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "User id that we want to get artifacts from",
+            "required": true,
+            "type": "integer",
+            "pattern": "[\\d]+",
+            "format": "int32"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": { "$ref": "#/definitions/GalleryDto" }
+          }
+        }
+      }
+    },
+    "/fx/user/{id}/unblock": {
+      "post": {
+        "tags": ["Operations with USER"],
+        "summary": "Unblock user",
+        "description": "Unblock user",
+        "operationId": "unblockUser",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "User's id which be unblocked.",
+            "required": true,
+            "type": "integer",
+            "pattern": "[\\d]+",
+            "format": "int32"
+          }
+        ],
+        "responses": { "default": { "description": "successful operation" } }
+      }
+    },
+    "/fx/user/{id}/update": {
+      "post": {
+        "tags": ["Operations with USER"],
+        "summary": "Update user data",
+        "description": "Update existed user data",
+        "operationId": "updateUser",
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "User id that we want to update",
+            "required": true,
+            "type": "integer",
+            "pattern": "[\\d]+",
+            "format": "int32"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "required": false,
+            "schema": { "$ref": "#/definitions/UserDto" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": { "$ref": "#/definitions/UserDto" }
+          }
+        }
+      }
+    },
+    "/fx/user/{userId}/blacklist/employer/{employerId}/add": {
+      "post": {
+        "tags": ["Operations with USER"],
+        "operationId": "addEmployerToBlacklist",
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "pattern": "[\\d]+",
+            "format": "int32"
+          },
+          {
+            "name": "employerId",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "pattern": "[\\d]+",
+            "format": "int32"
+          }
+        ],
+        "responses": { "default": { "description": "successful operation" } }
+      }
+    },
+    "/fx/user/{userId}/blacklist/vacancy/{vacancyId}/add": {
+      "post": {
+        "tags": ["Operations with USER"],
+        "operationId": "addVacancyToBlacklist",
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "pattern": "[\\d]+",
+            "format": "int32"
+          },
+          {
+            "name": "vacancyId",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "pattern": "[\\d]+",
+            "format": "int32"
+          }
+        ],
+        "responses": { "default": { "description": "successful operation" } }
+      }
+    },
+    "/fx/vacancy/create": {
+      "post": {
+        "tags": ["Operations with VACANCY"],
+        "summary": "Create vacancy for employer [BATCH]",
+        "description": "Create vacancy for employer",
+        "operationId": "createVacancy",
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "name": "employerLogin",
+            "in": "query",
+            "description": "Employer login to make vacancy for",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "required": false,
+            "schema": { "$ref": "#/definitions/VacancyDto" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": { "$ref": "#/definitions/VacancyDto" }
+          }
+        }
+      }
+    },
+    "/fx/vacancy/{id}": {
+      "delete": {
+        "tags": ["Operations with VACANCY"],
+        "summary": "Delete existed vacancy",
+        "description": "Set existed vacancy status to DELETED",
+        "operationId": "deleteVacancy",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Vacancy id that need to be deleted",
+            "required": true,
+            "type": "integer",
+            "pattern": "[\\d]+",
+            "format": "int32"
+          }
+        ],
+        "responses": { "default": { "description": "successful operation" } }
+      }
+    },
+    "/fx/vacancy/{id}/approve": {
+      "put": {
+        "tags": ["Operations with VACANCY"],
+        "summary": "Approve existed vacancy",
+        "description": "Set existed vacancy status to APPROVED",
+        "operationId": "approveVacancy",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Vacancy id that need to be approved",
+            "required": true,
+            "type": "integer",
+            "pattern": "[\\d]+",
+            "format": "int32"
+          }
+        ],
+        "responses": { "default": { "description": "successful operation" } }
+      }
+    },
+    "/fx/vacancy/{id}/archive": {
+      "put": {
+        "tags": ["Operations with VACANCY"],
+        "summary": "Archive existed vacancy",
+        "description": "Set existed vacancy status to ARCHIVED",
+        "operationId": "archiveVacancy",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Vacancy id that need to be archived",
+            "required": true,
+            "type": "integer",
+            "pattern": "[\\d]+",
+            "format": "int32"
+          }
+        ],
+        "responses": { "default": { "description": "successful operation" } }
+      }
+    },
+    "/fx/vacancy/{id}/block": {
+      "put": {
+        "tags": ["Operations with VACANCY"],
+        "summary": "Block existed vacancy",
+        "description": "Set existed vacancy status to BLOCKED",
+        "operationId": "blockVacancy",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Vacancy id that need to be blocked",
+            "required": true,
+            "type": "integer",
+            "pattern": "[\\d]+",
+            "format": "int32"
+          }
+        ],
+        "responses": { "default": { "description": "successful operation" } }
+      }
+    },
+    "/fx/vacancy/{id}/get": {
+      "get": {
+        "tags": ["Operations with VACANCY"],
+        "summary": "Get vacancy",
+        "operationId": "getVacancy",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Vacancy id",
+            "required": true,
+            "type": "integer",
+            "pattern": "[\\d]+",
+            "format": "int32"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": { "$ref": "#/definitions/VacancyDto" }
+          }
+        }
+      }
+    },
+    "/fx/vacancy/{id}/pushsubscriptions": {
+      "get": {
+        "tags": ["Operations with VACANCY"],
+        "summary": "Get vacancy push subscriptions",
+        "operationId": "getVacancyPushSubscriptions",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Vacancy id",
+            "required": true,
+            "type": "integer",
+            "pattern": "[\\d]+",
+            "format": "int32"
+          },
+          {
+            "name": "subscription",
+            "in": "query",
+            "description": "subscription type",
+            "required": false,
+            "type": "string",
+            "enum": ["NEW_RESPONSE", "NEW_INBOX"]
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/EmployerManagerVacanciesPushSubscriptionsDto"
+            }
+          }
+        }
+      }
+    },
+    "/fx/vacancy/{id}/update": {
+      "post": {
+        "tags": ["Operations with VACANCY"],
+        "summary": "Update existed vacancy",
+        "description": "Update existed vacancy",
+        "operationId": "updateVacancy",
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Vacancy id that need to be updated",
+            "required": true,
+            "type": "integer",
+            "pattern": "[\\d]+",
+            "format": "int32"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "required": false,
+            "schema": { "$ref": "#/definitions/VacancyDto" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": { "$ref": "#/definitions/VacancyDto" }
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "AdditionalEducationRecord": {
+      "type": "object",
+      "required": ["endYear", "name", "organization"],
+      "properties": {
+        "name": {
+          "type": "string",
+          "example": "Проверка слуха",
+          "readOnly": true
+        },
+        "organization": {
+          "type": "string",
+          "example": "Слуховые аппараты от Зины",
+          "readOnly": true
+        },
+        "endYear": {
+          "type": "integer",
+          "format": "int32",
+          "example": 2009,
+          "readOnly": true
+        },
+        "specialization": { "type": "string" },
+        "id": { "type": "integer", "format": "int32" }
+      }
+    },
+    "EmployerManagerDefaultPushSubscriptionsDto": {
+      "type": "object",
+      "properties": {
+        "employerManagerPushSubscriptions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/EmployerManagerDefaultPushSubscriptionDto"
+          }
+        }
+      }
+    },
+    "EmployerManagerDefaultPushSubscriptionDto": {
+      "type": "object",
+      "properties": {
+        "managerUserId": { "type": "integer", "format": "int32" },
+        "type": { "type": "string", "enum": ["NEW_RESPONSE", "NEW_INBOX"] }
+      }
+    },
+    "UserDto": {
+      "type": "object",
+      "required": [
+        "areaId",
+        "creationTime",
+        "firstName",
+        "lastName",
+        "login",
+        "password",
+        "resumeViewLimit",
+        "siteId"
+      ],
+      "properties": {
+        "login": { "type": "string", "example": "#strL#@#str7L#.ru" },
+        "password": { "type": "string", "example": "password" },
+        "firstName": { "type": "string", "example": "#strLC#" },
+        "lastName": { "type": "string", "example": "#strLC#" },
+        "siteId": { "type": "integer", "format": "int32", "example": 1 },
+        "areaId": { "type": "integer", "format": "int32", "example": 113 },
+        "creationTime": {
+          "type": "string",
+          "format": "date-time",
+          "example": "#dt#"
+        },
+        "authSystem": {
+          "type": "string",
+          "example": "HH",
+          "enum": [
+            "HH",
+            "PHONE",
+            "SOCHI",
+            "TUTBY",
+            "MAIL",
+            "VK",
+            "OK",
+            "FB",
+            "LI",
+            "GPLUS",
+            "DNR"
+          ]
+        },
+        "userType": {
+          "type": "string",
+          "example": "APPLICANT",
+          "enum": ["APPLICANT", "BACK_OFFICE_USER", "EMPLOYER"]
+        },
+        "middleName": { "type": "string", "example": "#strLC#" },
+        "email": { "type": "string", "example": "#strL#@#str7L#.ru" },
+        "mailingSubscription": {
+          "type": "boolean",
+          "example": true,
+          "default": false
+        },
+        "personalManager": { "type": "boolean", "default": false },
+        "hhid": { "type": "integer", "format": "int64" },
+        "resumeViewLimit": {
+          "type": "integer",
+          "format": "int32",
+          "example": 500
+        },
+        "userId": { "type": "integer", "format": "int32" },
+        "smallPhotoFileId": { "type": "integer", "format": "int32" },
+        "bigPhotoFileId": { "type": "integer", "format": "int32" },
+        "contactInfo": { "$ref": "#/definitions/ContactInformationDto" },
+        "emailVerified": {
+          "type": "boolean",
+          "example": true,
+          "default": false
+        },
+        "additionalPermissions": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "revokePermissions": { "type": "array", "items": { "type": "string" } },
+        "includeGroups": { "type": "array", "items": { "type": "string" } },
+        "excludeGroups": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+    "RecommendationInfoRecord": {
+      "type": "object",
+      "required": ["name", "organization", "position"],
+      "properties": {
+        "name": { "type": "string", "example": "Name #str#", "readOnly": true },
+        "organization": {
+          "type": "string",
+          "example": "Organization #str#",
+          "readOnly": true
+        },
+        "position": {
+          "type": "string",
+          "example": "Position #str#",
+          "readOnly": true
+        },
+        "id": { "type": "integer", "format": "int32" }
+      }
+    },
+    "CompanyDto": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int32",
+          "example": 272,
+          "readOnly": true
+        },
+        "name": { "type": "string" }
+      }
+    },
+    "GalleryDto": {
+      "type": "object",
+      "properties": {
+        "artifacts": {
+          "type": "array",
+          "items": { "$ref": "#/definitions/UserImageDto" }
+        }
+      }
+    },
+    "ProfessionalAreaDto": {
+      "type": "object",
+      "properties": {
+        "id": { "type": "integer", "format": "int32", "readOnly": true },
+        "description": { "type": "string" }
+      }
+    },
+    "PremoderationStatusDto": {
+      "type": "object",
+      "properties": {
+        "premoderationType": {
+          "type": "string",
+          "example": "WAIT",
+          "enum": ["APPROVED", "DISCARD", "WAIT", "NEED_FIX"]
+        },
+        "comment": { "type": "string" }
+      }
+    },
+    "ServiceItemDto": {
+      "type": "object",
+      "properties": {
+        "id": { "type": "integer", "format": "int32" },
+        "code": { "type": "string" },
+        "activeCount": { "type": "integer", "format": "int32" },
+        "areas": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": { "$ref": "#/definitions/AreaDto" }
+        },
+        "profAreas": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": { "$ref": "#/definitions/ProfessionalAreaDto" }
+        },
+        "servicePeriodic": { "type": "boolean", "default": false }
+      }
+    },
+    "FolderDto": {
+      "type": "object",
+      "required": ["name"],
+      "properties": {
+        "name": { "type": "string", "example": "Favourites#num3#" },
+        "id": { "type": "integer", "format": "int32" },
+        "ownerId": { "type": "integer", "format": "int32" },
+        "accessType": {
+          "type": "string",
+          "enum": ["OWNER_ONLY", "EVERYONE", "SELECTED_MANAGERS"]
+        },
+        "resumes": {
+          "type": "array",
+          "items": { "type": "integer", "format": "int32" }
+        }
+      }
+    },
+    "BillDto": {
+      "type": "object",
+      "required": ["agreementId", "price"],
+      "properties": {
+        "id": { "type": "integer", "format": "int32" },
+        "price": { "type": "number", "example": 1000.0 },
+        "blockedPrice": { "type": "number" },
+        "billTypeId": { "type": "integer", "format": "int32" },
+        "billStateId": { "type": "integer", "format": "int32" },
+        "agreementId": { "type": "integer", "format": "int32" }
+      }
+    },
+    "MoneyDto": {
+      "type": "object",
+      "properties": {
+        "amount": { "type": "number", "example": 120000.0, "readOnly": true },
+        "currency": {
+          "type": "string",
+          "example": "RUR",
+          "readOnly": true,
+          "enum": [
+            "RUR",
+            "USD",
+            "EUR",
+            "RUB",
+            "UAH",
+            "KZT",
+            "BYR",
+            "AZN",
+            "UZS",
+            "GEL",
+            "KGS"
+          ]
+        }
+      }
+    },
+    "RecommendationInfoDto": {
+      "type": "object",
+      "properties": {
+        "records": {
+          "type": "array",
+          "items": { "$ref": "#/definitions/RecommendationInfoRecord" }
+        }
+      }
+    },
+    "ServiceTypeDto": {
+      "type": "object",
+      "required": ["code", "period"],
+      "properties": {
+        "code": { "type": "string", "example": "FA", "readOnly": true },
+        "period": {
+          "type": "integer",
+          "format": "int32",
+          "example": 30,
+          "readOnly": true
+        },
+        "areas": {
+          "type": "array",
+          "readOnly": true,
+          "items": { "type": "integer", "format": "int32" }
+        },
+        "profAreas": {
+          "type": "array",
+          "readOnly": true,
+          "items": { "type": "integer", "format": "int32" }
+        }
+      }
+    },
+    "BillingAddressDto": {
+      "type": "object",
+      "properties": {
+        "phone": { "$ref": "#/definitions/PhoneDto" },
+        "id": { "type": "integer", "format": "int32" },
+        "city": { "type": "string", "example": "#Москва#" },
+        "street": { "type": "string", "example": "#Годовикова#" },
+        "building": { "type": "string", "example": "#num2#" },
+        "description": { "type": "string" },
+        "country": { "type": "string", "example": "#Россия#" },
+        "area": { "type": "string" },
+        "office": { "type": "string" },
+        "deliveryPerson": { "type": "string", "example": "#str#" }
+      }
+    },
+    "ContactInformationDto": {
+      "type": "object",
+      "properties": {
+        "email": { "type": "string", "example": "#str#@#str7#.ru" },
+        "preferredLink": {
+          "type": "string",
+          "example": "CELL_PHONE",
+          "enum": [
+            "CELL_PHONE",
+            "EMAIL",
+            "HOME_PHONE",
+            "NOTSET",
+            "UNKNOWN",
+            "WORK_PHONE"
+          ]
+        },
+        "personalSiteMap": {
+          "type": "object",
+          "additionalProperties": { "type": "string" }
+        },
+        "phoneMap": {
+          "type": "object",
+          "additionalProperties": { "$ref": "#/definitions/PhoneDto" }
+        },
+        "phones": {
+          "type": "array",
+          "items": { "$ref": "#/definitions/PhoneDto" }
+        }
+      },
+      "description": "Sample model for the documentation"
+    },
+    "PersonalManagerDto": {
+      "type": "object",
+      "properties": {
+        "userData": { "$ref": "#/definitions/UserDto" },
+        "multipleGroupId": {
+          "type": "integer",
+          "format": "int32",
+          "example": 31
+        }
+      }
+    },
+    "ProfessionalExperienceDto": {
+      "type": "object",
+      "properties": {
+        "records": {
+          "type": "array",
+          "items": { "$ref": "#/definitions/ExperienceRecord" }
+        }
+      }
+    },
+    "AddressDto": {
+      "type": "object",
+      "required": ["description"],
+      "properties": {
+        "metros": {
+          "type": "array",
+          "items": { "$ref": "#/definitions/MetroDto" }
+        },
+        "city": { "type": "string", "example": "Москва" },
+        "street": { "type": "string", "example": "улица Алексеевская" },
+        "building": { "type": "string", "example": "16" },
+        "description": { "type": "string", "example": "Some text!" },
+        "mapData": { "type": "string" },
+        "lat": { "type": "number", "format": "double", "example": 55.7 },
+        "lng": { "type": "number", "format": "double", "example": 37.5 },
+        "addressId": { "type": "integer", "format": "int32" }
+      }
+    },
+    "SpecializationDto": {
+      "type": "object",
+      "required": ["id"],
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int32",
+          "example": 415,
+          "readOnly": true
+        },
+        "description": { "type": "string", "example": "Химическая продукция" }
+      }
+    },
+    "RelocationInfoDto": {
+      "type": "object",
+      "properties": {
+        "relocation": {
+          "type": "string",
+          "readOnly": true,
+          "enum": [
+            "NO_RELOCATION",
+            "RELOCATION_POSSIBLE",
+            "RELOCATION_DESIRABLE"
+          ]
+        },
+        "regions": {
+          "type": "array",
+          "readOnly": true,
+          "items": { "$ref": "#/definitions/AreaDto" }
+        }
+      }
+    },
+    "PayerDto": {
+      "type": "object",
+      "required": ["name", "payerType"],
+      "properties": {
+        "billingAddress": { "$ref": "#/definitions/BillingAddressDto" },
+        "dateOfIssue": {
+          "type": "string",
+          "format": "date-time",
+          "example": "#dt#"
+        },
+        "bankDetail": { "$ref": "#/definitions/BankDetailDto" },
+        "payerType": {
+          "type": "string",
+          "example": "JOURFACE",
+          "enum": ["JOURFACE", "PBOUL", "INDIVIDUAL"]
+        },
+        "name": { "type": "string", "example": "#str#" },
+        "taxNumber": { "type": "string" },
+        "disabled": { "type": "boolean", "example": false, "default": false },
+        "id": { "type": "integer", "format": "int32" },
+        "accountId": { "type": "integer", "format": "int32" },
+        "agreements": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": { "$ref": "#/definitions/AgreementDto" }
+        }
+      }
+    },
+    "AdditionalEducationDto": {
+      "type": "object",
+      "properties": {
+        "records": {
+          "type": "array",
+          "items": { "$ref": "#/definitions/AdditionalEducationRecord" }
+        }
+      }
+    },
+    "ResumeCertificateDto": {
+      "type": "object",
+      "required": ["achievementDate", "title", "type", "url"],
+      "properties": {
+        "type": {
+          "type": "string",
+          "example": "CUSTOM",
+          "enum": ["CUSTOM", "MS"]
+        },
+        "ownerName": { "type": "string" },
+        "transcriptionId": { "type": "string" },
+        "accessCode": { "type": "string" },
+        "title": {
+          "type": "string",
+          "example": "Certificate_Moderate_#str15#"
+        },
+        "achievementDate": {
+          "type": "string",
+          "format": "date",
+          "example": "#dt-2000#"
+        },
+        "url": { "type": "string", "example": "URL_#str#" },
+        "selected": { "type": "boolean", "example": true, "default": false },
+        "year": { "type": "string" }
+      }
+    },
+    "BankDetailDto": {
+      "type": "object",
+      "properties": {
+        "id": { "type": "integer", "format": "int32" },
+        "firstName": { "type": "string" },
+        "lastName": { "type": "string" },
+        "middleName": { "type": "string" },
+        "address": { "type": "string", "example": "#str#" },
+        "companyName": { "type": "string" },
+        "kpp": { "type": "string" },
+        "kpp2": { "type": "string" },
+        "bankAccount": { "type": "string" },
+        "bank": { "type": "string" },
+        "bik": { "type": "string" },
+        "corrAccount": { "type": "string" },
+        "corrAccountBank": { "type": "string" },
+        "okpo": { "type": "string" },
+        "okonh": { "type": "string" },
+        "mfo": { "type": "string" }
+      }
+    },
+    "ExperienceRecord": {
+      "type": "object",
+      "required": [
+        "description",
+        "endDate",
+        "organization",
+        "position",
+        "startDate"
+      ],
+      "properties": {
+        "organization": {
+          "type": "string",
+          "example": "Хэдхантер",
+          "readOnly": true
+        },
+        "position": {
+          "type": "string",
+          "example": "Тестировщик",
+          "readOnly": true
+        },
+        "description": {
+          "type": "string",
+          "example": "Тестирование сайта",
+          "readOnly": true
+        },
+        "startDate": {
+          "type": "string",
+          "format": "date",
+          "example": "#dt-500#",
+          "readOnly": true
+        },
+        "endDate": {
+          "type": "string",
+          "format": "date",
+          "example": "#dt#",
+          "readOnly": true
+        },
+        "id": { "type": "integer", "format": "int32" },
+        "experienceCompany": { "$ref": "#/definitions/ExperienceCompany" }
+      }
+    },
+    "EmployerManagerDto": {
+      "type": "object",
+      "properties": {
+        "userData": { "$ref": "#/definitions/UserDto" },
+        "managerType": {
+          "type": "string",
+          "example": "MANAGER",
+          "enum": [
+            "MAIN_CONTACT_PERSON",
+            "MANAGER",
+            "VACANCY_PREMODERATOR",
+            "UNKNOWN"
+          ]
+        },
+        "phone": { "$ref": "#/definitions/PhoneDto" },
+        "additionalPhone": { "$ref": "#/definitions/PhoneDto" },
+        "position": { "type": "string", "example": "MANAGER" },
+        "moderatorManagerId": { "type": "integer", "format": "int32" },
+        "id": { "type": "integer", "format": "int32" },
+        "inMcpGroup": { "type": "boolean", "default": false }
+      }
+    },
+    "ApplicantCommentDto": {
+      "type": "object",
+      "properties": {
+        "senderId": { "type": "integer", "format": "int32", "readOnly": true },
+        "applicantId": {
+          "type": "integer",
+          "format": "int32",
+          "readOnly": true
+        },
+        "body": { "type": "string", "example": "#str50#", "readOnly": true },
+        "accessType": {
+          "type": "string",
+          "example": "COWORKERS",
+          "enum": ["OWNER", "COWORKERS", "UNKNOWN"]
+        },
+        "creationTime": {
+          "type": "string",
+          "format": "date-time",
+          "example": "#dt#"
+        },
+        "id": { "type": "integer", "format": "int32" }
+      }
+    },
+    "PhoneDto": {
+      "type": "object",
+      "required": ["city", "country", "number"],
+      "properties": {
+        "country": { "type": "string", "example": "7", "readOnly": true },
+        "city": { "type": "string", "example": "926", "readOnly": true },
+        "number": { "type": "string", "example": "1234567", "readOnly": true },
+        "comment": { "type": "string", "example": " ", "readOnly": true }
+      },
+      "description": "Sample model for the documentation"
+    },
+    "TestOfEmployerDto": {
+      "type": "object",
+      "properties": {
+        "guid": { "type": "string" },
+        "name": { "type": "string", "example": "Test #str20#" },
+        "description": {
+          "type": "string",
+          "example": "Test description #str20#"
+        },
+        "questions": {
+          "type": "array",
+          "items": { "$ref": "#/definitions/Question" }
+        }
+      }
+    },
+    "IndustryDto": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int32",
+          "example": 542,
+          "readOnly": true
+        },
+        "name": { "type": "string", "example": "Искусство, культура" }
+      }
+    },
+    "ExperienceCompany": {
+      "type": "object",
+      "required": ["organization"],
+      "properties": {
+        "organization": {
+          "type": "string",
+          "example": "DHL Express",
+          "readOnly": true
+        },
+        "areaId": { "type": "integer", "format": "int32", "example": 1 },
+        "url": { "type": "string", "example": "http://some-kind.ru" },
+        "industry": { "$ref": "#/definitions/IndustryDto" },
+        "industries": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": { "$ref": "#/definitions/IndustryDto" }
+        },
+        "company": { "$ref": "#/definitions/CompanyDto" }
+      }
+    },
+    "UserImageDto": {
+      "type": "object",
+      "properties": {
+        "userId": { "type": "integer", "format": "int32" },
+        "data": {
+          "type": "array",
+          "items": { "type": "string", "format": "byte" }
+        },
+        "fileName": { "type": "string" },
+        "userImageType": {
+          "type": "string",
+          "enum": ["RESUME_PHOTO", "PORTFOLIO"]
+        },
+        "title": { "type": "string" },
+        "id": { "type": "integer", "format": "int32" }
+      }
+    },
+    "AreaDto": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int32",
+          "example": 1,
+          "readOnly": true
+        },
+        "description": { "type": "string", "example": "Москва" }
+      }
+    },
+    "ResumeLanguageDto": {
+      "type": "object",
+      "required": ["nativeLanguageId"],
+      "properties": {
+        "nativeLanguageId": {
+          "type": "integer",
+          "format": "int32",
+          "example": 34
+        },
+        "languageLevel": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string",
+            "enum": ["A1", "A2", "B1", "B2", "C1", "C2", "L1"]
+          }
+        }
+      }
+    },
+    "PromoVacancyActionDto": {
+      "type": "object",
+      "properties": {
+        "actionName": { "type": "string" },
+        "url": { "type": "string" },
+        "startTime": { "type": "string", "format": "date" },
+        "endTime": { "type": "string", "format": "date" },
+        "employerIds": {
+          "type": "array",
+          "items": { "type": "integer", "format": "int32" }
+        },
+        "areaIds": {
+          "type": "array",
+          "items": { "type": "integer", "format": "int32" }
+        },
+        "professionIds": {
+          "type": "array",
+          "items": { "type": "integer", "format": "int32" }
+        },
+        "id": { "type": "integer", "format": "int32" }
+      }
+    },
+    "VacancyDto": {
+      "type": "object",
+      "properties": {
+        "specializations": {
+          "type": "array",
+          "items": { "$ref": "#/definitions/SpecializationDto" }
+        },
+        "keySkills": { "type": "array", "items": { "type": "string" } },
+        "vacancyMetallic": {
+          "type": "string",
+          "example": "STANDARD",
+          "enum": ["FREE", "STANDARD", "PREMIUM", "STANDARD_PLUS"]
+        },
+        "premoderationType": {
+          "type": "string",
+          "enum": ["APPROVED", "DISCARD", "WAIT", "NEED_FIX"]
+        },
+        "contactInfo": { "$ref": "#/definitions/ContactInfoDto" },
+        "workExperience": {
+          "type": "string",
+          "example": "NO_WORK_EXPERIENCE",
+          "enum": [
+            "NO_WORK_EXPERIENCE",
+            "WORK_EXPERIENCE_FROM_1_YEAR_TO_3_YEAR",
+            "WORK_EXPERIENCE_FROM_3_YEAR_TO_6_YEAR",
+            "WORK_EXPERIENCE_MORE_THAN_6_YEAR"
+          ]
+        },
+        "creationTime": {
+          "type": "string",
+          "format": "date-time",
+          "example": "#dt#"
+        },
+        "publicationTime": {
+          "type": "string",
+          "format": "date-time",
+          "example": "#dt#"
+        },
+        "expireTime": { "type": "string", "format": "date-time" },
+        "vacancyType": {
+          "type": "string",
+          "example": "OPEN",
+          "enum": ["OPEN", "CLOSE", "ANONYMOUS", "ADVERTISING"]
+        },
+        "address": { "$ref": "#/definitions/AddressDto" },
+        "employment": {
+          "type": "string",
+          "example": "FULL",
+          "enum": ["FULL", "PART", "PROJECT", "VOLUNTEER", "PROBATION"]
+        },
+        "compensationCurrency": {
+          "type": "string",
+          "example": "USD",
+          "enum": [
+            "RUR",
+            "USD",
+            "EUR",
+            "RUB",
+            "UAH",
+            "KZT",
+            "BYR",
+            "AZN",
+            "UZS",
+            "GEL",
+            "KGS"
+          ]
+        },
+        "schedule": {
+          "type": "string",
+          "example": "FULL_DAY",
+          "enum": ["FULL_DAY", "SHIFT", "FLEXIBLE", "REMOTE", "FLY_IN_FLY_OUT"]
+        },
+        "area": { "$ref": "#/definitions/AreaDto" },
+        "responseLetterRequired": { "type": "boolean", "default": false },
+        "testSolutionRequired": { "type": "boolean", "default": false },
+        "acceptHandicapped": { "type": "boolean", "default": false },
+        "acceptKids": { "type": "boolean", "default": false },
+        "acceptTemporary": {
+          "type": "boolean",
+          "example": true,
+          "default": false
+        },
+        "inboxPossibility": {
+          "type": "boolean",
+          "example": true,
+          "default": false
+        },
+        "approved": { "type": "boolean", "example": true, "default": false },
+        "spend": { "type": "boolean", "default": false },
+        "compensationFrom": { "type": "string", "example": "1200" },
+        "compensationTo": { "type": "string", "example": "1400" },
+        "compensationGross": { "type": "boolean", "default": false },
+        "pageTemplate": { "type": "string" },
+        "companyName": { "type": "string", "example": "Company #str20#" },
+        "description": { "type": "string", "example": "Description #str50#" },
+        "companyUrl": { "type": "string" },
+        "testGuid": { "type": "string" },
+        "title": { "type": "string", "example": "TEST_VACANCY_#str20#" },
+        "department": { "$ref": "#/definitions/DepartmentDto" },
+        "siteId": { "type": "integer", "format": "int32", "example": 1 },
+        "id": { "type": "integer", "format": "int32" },
+        "driverLicenseTypes": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": ["A", "B", "C", "D", "E", "BE", "CE", "DE", "TM", "TB"]
+          }
+        },
+        "acceptIncompleteResumes": { "type": "boolean", "default": false },
+        "vacancyCode": { "type": "string" },
+        "promo": { "type": "boolean", "default": false },
+        "workingDays": {
+          "type": "array",
+          "items": { "type": "string", "enum": ["ONLY_SATURDAY_AND_SUNDAY"] }
+        },
+        "workingTimeIntervals": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": ["FROM_FOUR_TO_SIX_HOURS_IN_A_DAY"]
+          }
+        },
+        "workingTimeModes": {
+          "type": "array",
+          "items": { "type": "string", "enum": ["START_AFTER_SIXTEEN"] }
+        }
+      }
+    },
+    "NewAccountDto": {
+      "type": "object",
+      "properties": {
+        "id": { "type": "integer", "format": "int32" },
+        "serviceItems": {
+          "type": "array",
+          "items": { "$ref": "#/definitions/ServiceItemDto" }
+        },
+        "version": { "type": "integer", "format": "int32" }
+      }
+    },
+    "EmployerManagerVacanciesPushSubscriptionsDto": {
+      "type": "object",
+      "properties": {
+        "employerManagerPushSubscriptions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/EmployerManagerVacancyPushSubscriptionDto"
+          }
+        }
+      }
+    },
+    "ResumeDto": {
+      "type": "object",
+      "properties": {
+        "moderationNotesBitMask": { "type": "integer", "format": "int64" },
+        "moderationFlagsBitMask": { "type": "integer", "format": "int64" },
+        "specializations": {
+          "type": "array",
+          "items": { "$ref": "#/definitions/SpecializationDto" }
+        },
+        "professionalExperience": {
+          "$ref": "#/definitions/ProfessionalExperienceDto"
+        },
+        "certificates": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": { "$ref": "#/definitions/ResumeCertificateDto" }
+        },
+        "additionalEducation": {
+          "$ref": "#/definitions/AdditionalEducationDto"
+        },
+        "careerGuidanceResultId": { "type": "integer", "format": "int32" },
+        "businessTripsReadiness": {
+          "type": "string",
+          "example": "READY",
+          "enum": ["NEVER", "READY", "SOMETIMES"]
+        },
+        "contactInformation": { "$ref": "#/definitions/ContactInformationDto" },
+        "recommendationInfo": { "$ref": "#/definitions/RecommendationInfoDto" },
+        "educationHistory": { "$ref": "#/definitions/EducationHistoryDto" },
+        "relocationInfo": { "$ref": "#/definitions/RelocationInfoDto" },
+        "workExperience": {
+          "type": "string",
+          "example": "WORK_EXPERIENCE_FROM_1_YEAR_TO_3_YEAR",
+          "enum": [
+            "NO_WORK_EXPERIENCE",
+            "WORK_EXPERIENCE_FROM_1_YEAR_TO_3_YEAR",
+            "WORK_EXPERIENCE_FROM_3_YEAR_TO_6_YEAR",
+            "WORK_EXPERIENCE_MORE_THAN_6_YEAR"
+          ]
+        },
+        "employments": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "enum": ["FULL", "PART", "PROJECT", "VOLUNTEER", "PROBATION"]
+          }
+        },
+        "education": {
+          "type": "string",
+          "example": "HIGHER",
+          "enum": [
+            "HIGHER",
+            "BACHELOR",
+            "MASTER",
+            "CANDIDATE",
+            "DOCTOR",
+            "UNFINISHED_HIGHER",
+            "SECONDARY",
+            "SPECIAL_SECONDARY"
+          ]
+        },
+        "creationTime": { "type": "string", "format": "date-time" },
+        "lastChangeTime": { "type": "string", "format": "date-time" },
+        "schedules": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "enum": [
+              "FULL_DAY",
+              "SHIFT",
+              "FLEXIBLE",
+              "REMOTE",
+              "FLY_IN_FLY_OUT"
+            ]
+          }
+        },
+        "roadTime": {
+          "type": "string",
+          "example": "LESS_THAN_HOUR",
+          "enum": ["ANY", "LESS_THAN_HOUR", "FROM_HOUR_TO_ONE_AND_HALF"]
+        },
+        "resumeStatus": {
+          "type": "string",
+          "example": "APPROVED",
+          "enum": [
+            "APPROVED",
+            "BLOCKED",
+            "CORRECTED",
+            "DELETED",
+            "USER_DELETED",
+            "AUTO_APPROVED",
+            "MODIFIED",
+            "NEW",
+            "NOT_FINISHED",
+            "UNKNOWN"
+          ]
+        },
+        "area": { "$ref": "#/definitions/AreaDto" },
+        "access": { "$ref": "#/definitions/AccessDto" },
+        "birthdayDate": {
+          "type": "string",
+          "format": "date",
+          "example": "#dt-6500#"
+        },
+        "citizenship": {
+          "type": "array",
+          "items": { "$ref": "#/definitions/AreaDto" }
+        },
+        "workTickets": {
+          "type": "array",
+          "items": { "$ref": "#/definitions/AreaDto" }
+        },
+        "desirableCompensation": { "$ref": "#/definitions/MoneyDto" },
+        "nearestMetro": { "$ref": "#/definitions/MetroDto" },
+        "gender": {
+          "type": "string",
+          "example": "MALE",
+          "enum": ["UNKNOWN", "MALE", "FEMALE"]
+        },
+        "keySkills": { "type": "array", "items": { "type": "string" } },
+        "hash": { "type": "string" },
+        "title": { "type": "string", "example": "TEST_RESUME_#str20#" },
+        "aboutMe": { "type": "string", "example": "Умею писать автотесты" },
+        "id": { "type": "integer", "format": "int32" },
+        "siteId": { "type": "integer", "format": "int32" },
+        "validationSchema": {
+          "type": "string",
+          "enum": ["no_validation", "incomplete", "full_validation"]
+        },
+        "driverLicenseTypes": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": ["A", "B", "C", "D", "E", "BE", "CE", "DE", "TM", "TB"]
+          }
+        },
+        "hasVehicle": { "type": "boolean", "default": false },
+        "languagesInfo": { "$ref": "#/definitions/ResumeLanguageDto" }
+      }
+    },
+    "Question": {
+      "type": "object",
+      "properties": {
+        "questionText": {
+          "type": "string",
+          "example": "What do you think about #str20#"
+        },
+        "multipleAnswersAllowed": {
+          "type": "boolean",
+          "example": false,
+          "default": false
+        },
+        "ownAnswerAllowed": {
+          "type": "boolean",
+          "example": true,
+          "default": false
+        },
+        "correctAnswers": { "type": "array", "items": { "type": "string" } },
+        "incorrectAnswers": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+    "MetroDto": {
+      "type": "object",
+      "required": ["metroId"],
+      "properties": {
+        "metroId": {
+          "type": "integer",
+          "format": "int32",
+          "example": 8,
+          "readOnly": true
+        },
+        "metroName": { "type": "string", "example": "Алексеевская" }
+      }
+    },
+    "AccessDto": {
+      "type": "object",
+      "required": ["type"],
+      "properties": {
+        "type": {
+          "type": "string",
+          "example": "CLIENTS",
+          "readOnly": true,
+          "enum": [
+            "NO_ONE",
+            "WHITELIST",
+            "BLACKLIST",
+            "CLIENTS",
+            "EVERYONE",
+            "DIRECT"
+          ]
+        },
+        "employerIds": {
+          "type": "array",
+          "readOnly": true,
+          "items": { "type": "integer", "format": "int32" }
+        }
+      }
+    },
+    "AgreementDto": {
+      "type": "object",
+      "required": ["agreementTypeId", "name"],
+      "properties": {
+        "id": { "type": "integer", "format": "int32" },
+        "barter": { "type": "boolean", "default": false },
+        "agreementTypeId": {
+          "type": "integer",
+          "format": "int32",
+          "example": 1
+        },
+        "billTypeId": { "type": "integer", "format": "int32" },
+        "name": { "type": "string", "example": "#str#" },
+        "startTime": { "type": "string", "format": "date-time" },
+        "endTime": { "type": "string", "format": "date-time" },
+        "comment": { "type": "string" }
+      }
+    },
+    "EmployerManagerVacancyPushSubscriptionDto": {
+      "type": "object",
+      "properties": {
+        "managerUserId": { "type": "integer", "format": "int32" },
+        "vacancyId": { "type": "integer", "format": "int32" },
+        "type": { "type": "string", "enum": ["NEW_RESPONSE", "NEW_INBOX"] },
+        "state": {
+          "type": "string",
+          "enum": ["SUBSCRIBED", "UNSUBSCRIBED", "DEFAULT"]
+        },
+        "managerReceiveNotifications": { "type": "boolean", "default": false }
+      }
+    },
+    "ContactInfoDto": {
+      "type": "object",
+      "properties": {
+        "contactName": { "type": "string" },
+        "email": { "type": "string" },
+        "phone": { "$ref": "#/definitions/PhoneDto" },
+        "additionalPhone": { "$ref": "#/definitions/PhoneDto" }
+      }
+    },
+    "DepartmentDto": {
+      "type": "object",
+      "properties": {
+        "name": { "type": "string" },
+        "code": { "type": "string" }
+      }
+    },
+    "EducationHistoryDto": {
+      "type": "object",
+      "properties": {
+        "history": {
+          "type": "array",
+          "items": { "$ref": "#/definitions/EducationRecord" }
+        }
+      }
+    },
+    "PaymentDto": {
+      "type": "object",
+      "required": ["amount"],
+      "properties": {
+        "payer": { "readOnly": true, "$ref": "#/definitions/PayerDto" },
+        "amount": { "type": "number", "example": 1.0e7, "readOnly": true }
+      }
+    },
+    "EducationRecord": {
+      "type": "object",
+      "required": ["diploma", "endDate", "faculty", "name"],
+      "properties": {
+        "name": { "type": "string", "example": "МАИ", "readOnly": true },
+        "faculty": {
+          "type": "string",
+          "example": "Аэрокосмический",
+          "readOnly": true
+        },
+        "diploma": { "type": "string", "example": "Магистр", "readOnly": true },
+        "endDate": {
+          "type": "string",
+          "format": "date",
+          "example": "#dt-1000#",
+          "readOnly": true
+        },
+        "isElementary": { "type": "boolean", "default": false },
+        "id": { "type": "integer", "format": "int32" },
+        "elementary": { "type": "boolean", "example": false, "default": false }
+      }
+    },
+    "EmployerDto": {
+      "type": "object",
+      "required": ["companyName", "employerCategory", "siteId"],
+      "properties": {
+        "mainContactPerson": {
+          "readOnly": true,
+          "$ref": "#/definitions/EmployerManagerDto"
+        },
+        "companyName": { "type": "string", "example": "#str#" },
+        "employerCategory": {
+          "type": "string",
+          "example": "COMPANY",
+          "enum": [
+            "COMPANY",
+            "AGENCY",
+            "PRIVATE_RECRUITER",
+            "PROJECT_DIRECTOR",
+            "UNKNOWN"
+          ]
+        },
+        "area": { "$ref": "#/definitions/AreaDto" },
+        "siteId": { "type": "integer", "format": "int32", "example": 1 },
+        "industries": {
+          "type": "array",
+          "items": { "$ref": "#/definitions/IndustryDto" }
+        },
+        "organizationForm": {
+          "type": "string",
+          "example": "OOO",
+          "enum": [
+            "OOO",
+            "OAO",
+            "ZAO",
+            "UP",
+            "TOO",
+            "NO_COMMERCE_ORGANIZATION",
+            "SOCIAL_ORGANIZATION",
+            "FOND",
+            "STATE_CORPORATION",
+            "IP",
+            "OTHER",
+            "ODO",
+            "FOREIGN_ENTERPISE",
+            "JOINT_ENTERPISE",
+            "PUBLIC_ASSOCIATION",
+            "AO",
+            "PAO"
+          ]
+        },
+        "employeesNumber": {
+          "type": "string",
+          "example": "LESS_THAN_50",
+          "enum": [
+            "LESS_THAN_50",
+            "FROM_51_TO_100",
+            "FROM_101_TO_250",
+            "FROM_251_TO_500",
+            "MORE_THAN_500"
+          ]
+        },
+        "employerState": {
+          "type": "string",
+          "example": "APPROVED",
+          "enum": ["NEW", "APPROVED", "DISCARDED", "WAITING"]
+        },
+        "site": { "type": "string" },
+        "description": { "type": "string", "example": "#str50#" },
+        "employerId": { "type": "integer", "format": "int32" },
+        "mainEmployerId": { "type": "integer", "format": "int32" },
+        "personalManagerId": { "type": "integer", "format": "int32" }
+      }
+    },
+    "ManagerToManagerPermissionsDto": {
+      "type": "object",
+      "properties": {
+        "permissionGrantManagerIds": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": { "type": "integer", "format": "int32" }
+        },
+        "operations": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "enum": [
+              "NEGOTIATION_RW",
+              "NEGOTIATION_RO",
+              "VACANCY_ARCHIVE",
+              "VACANCY_EDIT",
+              "VACANCY_VIEW",
+              "VACANCY_VIEW_ARCHIVED",
+              "VACANCY_VIEW_SYSTEM_INFO",
+              "EMPLOYER_MANAGER_DELETE",
+              "EMPLOYER_MANAGER_EDIT",
+              "EMPLOYER_MANAGER_VIEW"
+            ]
+          }
+        }
+      }
+    }
+  }
+}
