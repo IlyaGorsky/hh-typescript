@@ -74,7 +74,6 @@ var userInfo: [string, number] = ["Ilya", 26];
  * @name Any
  * @description Описывает данные которые могут быть не изветсны на момент написания приложения
  */
-
 var someVar: any = "hello";
 // console.log(someVar); // сейчас someVar - это string
 // someVar = 20;
@@ -88,7 +87,7 @@ var result: void = undefined;
 
 /**
  * @name Never
- * @despcription Используется в качестве возвращаемого типа функции которые генирируют ошибку
+ * @despcription Используется в качестве возвращаемого типа  функции например которые генирируют ошибку
  */
 var error = (message: string) => {
   throw new Error(message);
