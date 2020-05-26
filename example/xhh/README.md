@@ -1,3 +1,3 @@
 # EXAMPLE
 
-`npx @manifoldco/swagger-to-ts ./swagger.json --output api.ts`
+`npx @manifoldco/swagger-to-ts ./example/xhh/swagger.json --output api.ts`

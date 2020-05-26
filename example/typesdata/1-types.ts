@@ -67,16 +67,18 @@ currentFramework = Frameworks[Frameworks.React];
  * @description Кортеж массивы но заране c известным набором элементов
  */
 var userInfo: [string, number] = ["Ilya", 26];
-// var userName: string = userInfo[0];
+var userName: string = userInfo[0];
 // var userAge: string = userInfo[1];
 
 /**
  * @name Any
  * @description Описывает данные которые могут быть не изветсны на момент написания приложения
  */
-var someVar: any = "hello";
+var someVar: any;
+
 // console.log(someVar); // сейчас someVar - это string
 // someVar = 20;
+// someVar = "20"
 // console.log(someVar); // сейчас someVar - это number
 
 /**
@@ -84,6 +86,9 @@ var someVar: any = "hello";
  * @description Отсутввие какого либо значения
  */
 var result: void = undefined;
+
+// undefined = 1;
+// void 0;
 
 /**
  * @name Never
@@ -94,3 +99,9 @@ var error = (message: string) => {
 };
 
 var errorBadRequest = () => error("BadRequest");
+
+/**
+ * TODO:
+ * @name Unknown
+ * @description
+ */

@@ -91,8 +91,7 @@ class Bar {
 function doStuff(arg: Foo | Bar) {
   if (arg instanceof Foo) {
     console.log(arg.foo);
-  }
-  if (arg instanceof Bar) {
+  } else {
     console.log(arg.bar);
   }
 }

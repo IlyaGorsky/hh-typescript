@@ -20,7 +20,7 @@ var helloWorldStringLength: number = (<string>helloWorldString).length;
 var helloWorldStringLength: number = (helloWorldString as string).length;
 
 type Baz = { a: number; b: number };
-let v1 = { a: 1, b: 2 } as Baz;
+let v1 = { a: 1, b: 2 } as Baz; // valid
 let v2 = { a: 1 } as Baz; // Супер тип
 let v3 = { a: 1, b: 2, c: 3 } as Baz; // Подтип
 // let v4 = { d: 4 } as Baz; // bad

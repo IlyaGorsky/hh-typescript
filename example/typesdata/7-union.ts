@@ -10,11 +10,11 @@
  */
 var userId: number | string;
 
-userId = 149;
-console.log(userId);
+// userId = 149;
+// console.log(userId);
 
 userId = "149fff";
-console.log(userId);
+// console.log(userId);
 
 // userId = false;
 
@@ -78,10 +78,10 @@ interface Circle {
  */
 var Shape: Square | Rectangle | Circle;
 
-Shape = {
-  kind: "square",
-  size: 10,
-};
+// Shape = {
+//   kind: "square",
+//   size: 10,
+// };
 
 // Shape.width;
 
@@ -91,22 +91,22 @@ Shape = {
  */
 type Shape = Square | Rectangle | Circle;
 
-// const figure: Shape = {
-//   kind: "rectangle",
-//   width: 10,
-//   height: 10,
-// };
+const figure: Shape = {
+  kind: "rectangle",
+  width: 10,
+  height: 10,
+};
 
-// function getFigureWidth(fig: Shape): number {
-//   switch (fig.kind) {
-//     case "rectangle":
-//       return fig.width;
-//     case "circle":
-//       return fig.radius * 2;
-//     case "square":
-//       return Math.sqrt(fig.size);
-//   }
-// }
+function getFigureWidth(fig: Shape): number {
+  switch (fig.kind) {
+    case "rectangle":
+      return fig.size;
+    case "circle":
+      return fig.radius * 2;
+    case "square":
+      return Math.sqrt(fig.size);
+  }
+}
 
 /**
  * Intersection types
@@ -137,7 +137,7 @@ type UserFavoritesResponse = UserDataResponse & ArticlesDataResposne;
 
 function handleUserFavoritesResponse(response: UserFavoritesResponse): void {
   if (response.error) {
-    console.log(response.error);
+    console.log(response.error.message);
     return;
   }
 

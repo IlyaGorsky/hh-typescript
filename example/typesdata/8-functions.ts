@@ -56,7 +56,7 @@ getPriceByCountry(12, "RU");
 type SomeFunction = (a: number, b: number) => number;
 let f: SomeFunction = (a: number, b: number): number => a + b;
 
-// var f2: SomeFunction = (a, b) => a + b
+var f2: SomeFunction = (a, b) => a + b
 // f(2, "2")
 
 
@@ -84,8 +84,9 @@ function getDiscountByCountry(price: number, countryCode?: string) : number | Co
 
   return price
 }
-getDiscountByCountry(20)
-getDiscountByCountry(10, "EN")
+// getDiscountByCountry(20)+getDiscountByCountry(20)
+
+// getDiscountByCountry(10, "EN")
 // getDiscountByCountry(10) + getDiscountByCountry(10, "RU")
 
 
@@ -106,3 +107,7 @@ function greeting(communityName:string, ...names:Member[] | string[]):void {
     console.log(`Hello new members ${communityName} community: ${names.join(",")}!`)
   }
 }
+
+greeting('frotned', {name: 'l'})
+greeting('frotned', {fullName: 'l'})
+greeting('backend', 'Ilya')

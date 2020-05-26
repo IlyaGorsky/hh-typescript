@@ -10,6 +10,7 @@ interface IUser {
   lastName: string;
 }
 
+
 function prinUserFullName(user: IUser): void {
   console.log(`${user.firstName} ${user.lastName}`);
 }
@@ -18,10 +19,14 @@ function printUserName(userObj: { firstName: string }) {
   console.log(userObj.firstName);
 }
 
-var someUser: IUser = {
+var someUser = {
   firstName: "Dead",
   lastName: "Pool",
 } as const;
+
+var someArray = [1, 2] as const;
+
+someArray.push(1)
 
 // prinUserFullName({ foo: 123, baz: 456 });
 prinUserFullName(someUser);
@@ -41,7 +46,7 @@ function createUserConfig(userConfig: UserConfig): { id: string } {
   const number: number = Math.random();
   const id: string = number
     .toString(36)
-    .substr(2, userConfig.ag || userConfig.name.length);
+    .substr(2, userConfig.age || userConfig.name.length);
 
   return {
     id,
@@ -137,9 +142,25 @@ mySearch = function (src, sub) {
  * Extending Interfaces
  * @description Наследование интефрейсов, работает как наследование классов. Череез ключевое слово extends
  */
-interface ShapeColor {
+type ShapeColor {
   color: string;
 }
+
+class ShapeColorClass {
+  color: string;
+
+  constructor(color: string) {
+    this.color = color;
+  }
+}
+
+var someVarColor: ShapeColor = new ShapeColorClass('ted');
+
+// var s = 
+
+// someVarColor = s;
+
+
 interface PenStroke {
   penWidth: number;
 }
@@ -155,3 +176,5 @@ let square = {} as Square;
 square.color = "blue";
 square.sideLength = 10;
 square.penWidth = 5.0;
+
+
