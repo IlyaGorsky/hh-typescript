@@ -63,7 +63,7 @@ currentFramework = Frameworks[Frameworks.React];
 // Frameworks[1] --> React
 
 /**
- * @name Turple
+ * @name Tuple
  * @description Кортеж массивы но заране c известным набором элементов
  */
 var userInfo: [string, number] = ["Ilya", 26];

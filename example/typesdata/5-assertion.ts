@@ -26,3 +26,13 @@ let v3 = { a: 1, b: 2, c: 3 } as Baz; // Подтип
 // let v4 = { d: 4 } as Baz; // bad
 
 let forms = document.querySelectorAll(".form") as NodeListOf<HTMLFormElement>;
+
+/**
+ * Выстрел в ногу с any и приведением типа
+ */
+function shot(arg: any) {
+  return arg as number;
+}
+
+const shotValue = shot("5");
+const shotResult = shotValue + 10; // valid typing, invalid result

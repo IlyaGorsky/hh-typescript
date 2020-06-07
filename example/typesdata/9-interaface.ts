@@ -10,7 +10,6 @@ interface IUser {
   lastName: string;
 }
 
-
 function prinUserFullName(user: IUser): void {
   console.log(`${user.firstName} ${user.lastName}`);
 }
@@ -26,7 +25,7 @@ var someUser = {
 
 var someArray = [1, 2] as const;
 
-someArray.push(1)
+someArray.push(1);
 
 // prinUserFullName({ foo: 123, baz: 456 });
 prinUserFullName(someUser);
@@ -142,9 +141,9 @@ mySearch = function (src, sub) {
  * Extending Interfaces
  * @description Наследование интефрейсов, работает как наследование классов. Череез ключевое слово extends
  */
-type ShapeColor {
+type ShapeColor = {
   color: string;
-}
+};
 
 class ShapeColorClass {
   color: string;
@@ -154,12 +153,11 @@ class ShapeColorClass {
   }
 }
 
-var someVarColor: ShapeColor = new ShapeColorClass('ted');
+var someVarColor: ShapeColor = new ShapeColorClass("ted");
 
-// var s = 
+// var s =
 
 // someVarColor = s;
-
 
 interface PenStroke {
   penWidth: number;
@@ -177,4 +175,28 @@ square.color = "blue";
 square.sideLength = 10;
 square.penWidth = 5.0;
 
+/**
+ * Наследование - не тоже самое что объединение типов
+ */
+interface IUserDB {
+  id: number;
+  nickName: string;
+}
 
+interface ISession {
+  id: number;
+  nickName: boolean;
+  hhid: string;
+}
+
+// Такой интерфейс не получится создать, т.к. типы не идентичны
+interface IUserDBSession extends IUserDB, ISession {}
+
+// Тип можно сделать через объединение, но он будет заведомо неправильным
+type UserSession = IUserDB & ISession;
+
+const userSession: UserSession = {
+  id: 1,
+  hhid: "123abc",
+  nickName: "a", // должно быть never
+};
