@@ -12,16 +12,26 @@ export namespace classes {
 
   /**
    * Класс пользователя
+   * Example constructor
    */
   class User {
-    name: string;
+    userName: string;
+    city: string = 'Moscow';
 
-    constructor(name: string) {
-      this.name = name;
+    constructor(userName: string) {
+      this.userName = userName;
     }
+
+  }
+  class SuperUser {
+    constructor(public nickName: string) { }
   }
 
-  let userFoo: any = new User("foo");
+  let userFoo= new User("foo");
+  let userSuper= new SuperUser("foo");
+
+  console.log(userSuper.nickName);
+
 
   /**
    * Наследование
@@ -36,12 +46,26 @@ export namespace classes {
 
   let employerFoo = new Employee("foo");
 
+  class Test {
+    constructor(public testGroup: string, printMeeting: string) {
+    }
+  }
+
+  class SomeTest extends Test {
+    constructor(a) {
+      super(a);
+    }
+  }
+
+
   /**
    * Статичные свойства и методы
    * Обьялвются с ключевым словом static
    */
 
   class Email {
+    public static VALID_CODE:string = 'OK'
+
     public static validateEmail(email: string): boolean {
       return email.match(/^([A-Za-z])/)?.length !== 0;
     }
@@ -51,6 +75,7 @@ export namespace classes {
     Email.validateEmail
   );
 
+  
   /**
    * Абстрактные классы
    */
@@ -79,8 +104,10 @@ export namespace classes {
   }
 
   let department: Department; // ok to create a reference to an abstract type
+
   department = new Department(); // error: cannot create an instance of an abstract class
   department = new AccountingDepartment(); // ok to create and assign a non-abstract subclass
+  
   department.printName();
   department.printMeeting();
   department.generateReports();

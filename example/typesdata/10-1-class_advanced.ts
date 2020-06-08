@@ -59,7 +59,7 @@ export namespace ClassAdanced {
   let SomeChat = new Chat();
 
   // Обращение к приватным свойствам или методам вне родительского класса запрещены
-  SomeChat.messages;
+  // SomeChat.messages
   // Публиичные поля и методы доступны всем
   SomeChat.sayChat("2132", "Ilya", "Hello wrold!");
 
@@ -91,7 +91,7 @@ export namespace ClassAdanced {
       this.hash = this.cretateHash();
     }
 
-    protected cretateHash(): string {
+    public cretateHash(): string {
       return Math.random().toString(36).substr(2, 9);
     }
 
@@ -125,10 +125,11 @@ export namespace ClassAdanced {
       console.log(this.hash); // Доступ к приватным cвойствам или методам имеют тольк родительские классы
     }
 
-    protected cretateHash(): string {
+    public cretateHash(): string {
       return "";
     }
   }
+
   let androidChat = new Chat();
   let androidUser = new User("Androind Man");
   let androindUserMessanger = new AndroidMessangerClient(
