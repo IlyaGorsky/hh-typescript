@@ -1,6 +1,21 @@
 /**
- * Дженерики - универсальные типы, способные работать с разными сущностями
+ * Дженерики - обобщенные типы, способные работать с разными сущностями
  */
+
+/**
+ * Как работает дженерный Array
+ * Array<number> === IArray<number> === number[]
+ */
+{
+  interface IArray<T = any> {
+    // Вместо T можно использовать любые имена. ItemType например
+    [key: number]: T;
+  }
+
+  const array1: IArray = [1, "2", true];
+  const array2: IArray<number> = [1, 2, 3];
+  const _array2: IArray<number> = [1, "2", true];
+}
 
 /**
  * Дженерные функции
@@ -24,10 +39,13 @@
 }
 
 /**
- * Зависимый тип
+ * Зависимый тип и extends
  */
 {
-  const getObjectProperty = <Source extends {}, PropName extends keyof Source>(
+  const getObjectProperty = <
+    Source extends { a: number },
+    PropName extends keyof Source
+  >(
     source: Source,
     propName: PropName
   ) => {
@@ -41,12 +59,14 @@
   };
 
   const aPropFromSource: number = getObjectProperty(sourceObjectExample, "a");
-  const dPropFromSource: boolean = getObjectProperty(sourceObjectExample, "d");
-
+  const aPropFromSourceAuto = getObjectProperty(sourceObjectExample, "a");
   const aPropFromSourceError: boolean = getObjectProperty(
     sourceObjectExample,
     "a"
   );
+
+  const dPropFromSource: boolean = getObjectProperty(sourceObjectExample, "d");
+  const badSource = getObjectProperty({ b: 5 }, "d");
 }
 
 /**
@@ -59,6 +79,23 @@
     source: Source,
     propName: keyof Source
   ) => {
+    return source[propName];
+  };
+
+  const sourceObjectExample = {
+    a: 1,
+    b: "2",
+    c: true,
+  };
+
+  const aPropFromSource: number = getObjectProperty(sourceObjectExample, "a");
+}
+
+/**
+ * Еще нерабочий пример - пробуем без дженерика
+ */
+{
+  const getObjectProperty = (source: {}, propName: keyof typeof source) => {
     return source[propName];
   };
 
@@ -101,21 +138,9 @@
   ]);
 
   console.log(objectWithoutAB.a);
+  console.log(objectWithoutAB.b);
   console.log(objectWithoutAB.c);
-}
-
-/**
- * Как работает дженерный Array
- * Array<number> === IArray<number> === number[]
- */
-{
-  interface IArray<T = any> {
-    [key: number]: T;
-  }
-
-  const array1: IArray = [1, "2", true];
-  const array2: IArray<number> = [1, 2, 3];
-  const _array2: IArray<number> = [1, "2", true];
+  console.log(objectWithoutAB.d);
 }
 
 /**
@@ -131,6 +156,44 @@
   const _defaultIcon: AbstractIcon = { size: 16, kind: "loading" };
 
   const removeIcon: AbstractIcon<"remove"> = { size: 16, kind: "remove" };
+
   const _removeIcon: AbstractIcon<"remove"> = { size: 16, kind: "default" };
   const __removeIcon: AbstractIcon<"remove"> = { size: 16, kind: "loading" };
+}
+
+/**
+ * Дженерный класс
+ */
+{
+  interface IPageDefaultState {
+    pageName: string;
+  }
+
+  class Page<PageState extends {}> {
+    fullPageState: IPageDefaultState & PageState;
+
+    constructor(additionalPageState: PageState, pageName: string) {
+      this.fullPageState = { pageName, ...additionalPageState };
+    }
+  }
+
+  interface IVacancyPage {
+    id: number;
+    name: string;
+    company: { name: string };
+  }
+
+  const vacancyPage = new Page<IVacancyPage>(
+    {
+      id: 1,
+      name: "vacancy name",
+      company: {
+        name: "company name",
+      },
+    },
+    "vacancy_view"
+  );
+
+  console.log(vacancyPage.fullPageState.name);
+  console.log(vacancyPage.fullPageState.pageName);
 }
