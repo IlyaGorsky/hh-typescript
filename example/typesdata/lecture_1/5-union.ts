@@ -107,7 +107,7 @@
 // Для примера напишем функцию получение все избранных статей пользователя
   interface ErrorResponseData {
     Ok: boolean;
-    error: { message: string };
+    error?: { message: string };
   }
 
   interface Article {

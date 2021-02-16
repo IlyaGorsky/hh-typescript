@@ -341,11 +341,11 @@
   // mixedArray.push("asdsa"); // Error
 
   class Animal {
-    say: string;
+    say?: string;
     voice() {}
   }
   class Cat extends Animal { voice() {} }
-  class Dog extends Animal { say:'Woof'; voice() {}}
+  class Dog extends Animal { say ='Woof'; voice() {}}
   
   // const animals = [new Dog];
   const animals = [new Cat, new Dog];
@@ -361,7 +361,7 @@
    */
   let userInfo: [string, number] = ["Ilya", 26];
   let userName: string = userInfo[0];
-  let userAge: stri = userInfo[1];
+  let userAge: number = userInfo[1];
 
   // Кортеж поддерживате spread оператор
   type Strings = [string, string];
