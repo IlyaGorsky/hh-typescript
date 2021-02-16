@@ -265,8 +265,8 @@
     GBP // 5
   }
 
-  // let gbp: 4;
-  let gbp: 5;
+  let gbp: 4;
+  // let gbp: 5;
   gbp = Currency.GBP;
 
   // Псевдоним
@@ -336,7 +336,7 @@
   let boolArray: boolean[] = [true, false];
   let mixedArray = [...students, ...counters];
 
-  // students.push(1)
+  // students.push(1) // Error
 
   // mixedArray.push("asdsa"); // Error
 
@@ -345,11 +345,11 @@
     voice() {}
   }
   class Cat extends Animal { voice() {} }
-  class Dog extends Animal { say ='Woof'; voice() {}}
+  class Dog extends Animal { say: 'Woof'; voice() {}}
   
   // const animals = [new Dog];
   const animals = [new Cat, new Dog];
-  animals.push({say:"", voice() {}});
+  animals.push({say: ''});
 
   const catAndDogs = [new Cat, new Dog];
   catAndDogs.push(new Animal)
