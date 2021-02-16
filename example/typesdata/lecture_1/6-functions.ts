@@ -56,8 +56,8 @@
 
   // Типизрованый spread + tuple
   function spreadFn(foo, ...rest: [{ id: string }, { id: {} }, ...number[]]) {
-    // rest[0].id + rest[3]
-    rest[1].id + rest[1]
+    rest[0].id + rest[3]
+    // rest[1].id + rest[3]
   }
 
   // Алиас для функции
