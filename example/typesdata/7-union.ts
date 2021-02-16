@@ -1,175 +1,156 @@
 /**
- * Объединения описывает значение, которое может быть одним из нескольких типов
+ *
  * @module union.ts
- * @description Использую вертикальную черту number | string | boolean
+ * @description Объединения описывает значение, которое может быть одним из нескольких типов
+ * Использую вертикальную черту number | string | boolean
  */
+{
+    /**
+     * Можем объявлять переменую объяденив с примитивами
+     */
+    let userId: number | string;
+    userId = 149;
+    userId = "149fff";
+    // userId = false;
 
-/**
- * Переменная 2 с типами значения
- * @name userId
- */
-var userId: number | string;
 
-// userId = 149;
-// console.log(userId);
+    /**
+     * Алисас с объядением строковых литералов
+     * @alias Directions
+     */
+    type Directions = "up" | "down" | "left" | "right";
 
-userId = "149fff";
-// console.log(userId);
+    let operatorMove: Directions = "up";
 
-// userId = false;
+    // operatorMove = 'top';
+  
+    /**
+     * Заполняет строку слева пробелами или новой строкой
+     *
+     * @description Здес можно использовать тип для объединения параметра padding
+     */
+    function padLeft(value: string, padding: number | string) {
+      if (typeof padding === "number") {
+        return Array(padding + 1).join(" ") + value;
+      }
+      if (typeof padding === "string") {
+        return padding + value;
+      }
+      throw new Error(`Expected string or number, got '${padding}'.`);
+    }
+    console.log(padLeft("Hello world", 4));
+    console.log(padLeft("Hello world", " :) "));
+    // console.log(padLeft("Hello world", {}));
 
-/**
- * Заполняет строку слева пробелами или новой строкой
- *
- * @param value {string}
- * @param padding {number|string}
- * @description Можем использовать тип для объединения параметра padding
- */
-function padLeft(value: string, padding: number | string) {
-  if (typeof padding === "number") {
-    return Array(padding + 1).join(" ") + value;
-  }
-  if (typeof padding === "string") {
-    return padding + value;
-  }
-  throw new Error(`Expected string or number, got '${padding}'.`);
-}
+    interface SimpleSquare {
+      kind: "square";
+      size: number;
+    }
 
-console.log(padLeft("Hello world", 4));
-console.log(padLeft("Hello world", " :) "));
+    interface Rectangle {
+      kind: "rectangle";
+      width: number;
+      height: number;
+    }
 
-/**
- * Игральаня кость
- *
- * @alias Dice
- * @name dice
- */
-type Dice = 1 | 2 | 3 | 4 | 5 | 6;
+    interface Circle {
+      kind: "circle";
+      radius: number;
+    }
 
-/**
- * Алиас для направлений
- *
- * @alias Directions
- */
-type Directions = "up" | "down" | "left" | "right";
-var whereMove: Directions = "up";
+    /**
+     * Литерал с объединением 
+     *
+     * @name Shape
+     * @type {object}
+     */
+    let SomeShape: SimpleSquare | Rectangle | Circle;
 
-interface Square {
-  kind: "square";
-  size: number;
-}
+    SomeShape = {
+      kind: "circle",
+      radius: 10,
+    }
+  
+    SomeShape.radius;
 
-interface Rectangle {
-  kind: "rectangle";
-  width: number;
-  height: number;
-}
 
-interface Circle {
-  kind: "circle";
-  radius: number;
-}
+    /**
+     * Алиас c объединением интерфейсов
+     * @alias Shape
+     */
+    type TypeShape = SimpleSquare | Rectangle | Circle;
 
-/**
- * Литерал с объединением типамиинтерфейсов
- *
- * @name Shape
- * @type {object}
- */
-var Shape: Square | Rectangle | Circle;
+    const figure: TypeShape = {
+      kind: "rectangle",
+      width: 10,
+      height: 10,
+    };
 
-// Shape = {
-//   kind: "square",
-//   size: 10,
-// };
-
-// Shape.width;
-
-/**
- * Алиас c объединением интерфейсов
- * @alias Shape
- */
-type Shape = Square | Rectangle | Circle;
-
-const figure: Shape = {
-  kind: "rectangle",
-  width: 10,
-  height: 10,
-};
-
-function getFigureWidth(fig: Shape): number {
-  switch (fig.kind) {
-    case "rectangle":
-      return fig.size;
-    case "circle":
-      return fig.radius * 2;
-    case "square":
-      return Math.sqrt(fig.size);
-  }
+    function getFigureWidth(fig: TypeShape): number {
+      switch (fig.kind) {
+        case "rectangle":
+          return fig.width;
+        case "circle":
+          return fig.radius * 2;
+        case "square":
+          return Math.sqrt(fig.size);
+      }
+    }
 }
 
 /**
  * Intersection types
  * @description Пересечение типов
- * @example Типы пересечения похожи на типы объединения, но используются для группировки не скольких типов в один общий
- *          Для примера напишем функцию получение все избранных статей пользователя с типизируемым ответом
- *          Ответ может быть ErrorHandling & User & ArticlesData это значит что ответ будет иметь все члены трех типов
- *          Воспользуемся оператом & для вывода нового типа с пересчение всех объектов
- *          UserFavoritesResponse = UserDataResponse & ArticlesDataResposne;
+ *              Типы пересечения похожи на типы объединения, но используются для группировки не скольких типов в один общий
  */
-
-interface ErrorHandling {
-  success: boolean;
-  error?: { message: string };
-}
-
-interface UserModel {
-  favorties: { name: string }[];
-}
-
-interface ArticlesData {
-  articles: { name: string }[];
-}
-
-type UserDataResponse = UserModel & ErrorHandling;
-type ArticlesDataResposne = ArticlesData & ErrorHandling;
-type UserFavoritesResponse = UserDataResponse & ArticlesDataResposne;
-
-function handleUserFavoritesResponse(response: UserFavoritesResponse): void {
-  if (response.error) {
-    console.log(response.error.message);
-    return;
+{
+// Для примера напишем функцию получение все избранных статей пользователя
+  interface ErrorResponseData {
+    Ok: boolean;
+    error: { message: string };
   }
 
-  const articlesByFavorite = response.favorties.filter(
-    ({ name }, index: number): boolean => {
-      const article = response.articles[index];
-      if (article && article.name) {
-        return article.name === name;
-      }
-      return false;
+  interface Article {
+    id: number;
+    name: string
+  }
+  interface UserModel {
+    favorites: Article[]
+  }
+  interface Articles {
+    articles: Article[]
+  }
+  
+  type UserFavoritesResponse = UserModel & Articles & ErrorResponseData;
+  
+  function getUserFavoritesArticle(response: UserFavoritesResponse) {
+    if (!response.Ok) {
+      console.error(response.error.message);
+      return false
     }
-  );
+    const articlesByFavorite = response.favorites.filter(
+      ({ name }, index: number) => {
+        const article = response.articles[index];
+        if (article && article.id) {
+          return article.name === name;
+        }
+        return false;
+      }
+    );
+    return articlesByFavorite
+  }
 
-  console.log(articlesByFavorite);
+  const responseData = {
+    Ok: true,
+    articles: [{ id: 1, name: 'Some article' }, { id: 2, name:'Some article two'}],
+    favorites: [{id: 1, name: 'Some article'}]
+  }
+  
+  const favorites = getUserFavoritesArticle(responseData)
+
+  if (Array.isArray(favorites)) {
+    favorites.forEach((article) => {
+      article.name
+    })
+  }
 }
-
-function getUserFavorites(): void {
-  let fetchUser = {
-    favorties: [{ name: "Lorem" }, { name: "test" }],
-  };
-
-  let fetcArticle = {
-    articles: [{ name: "Lorem" }],
-  };
-
-  let response: UserFavoritesResponse = {
-    articles: fetcArticle.articles,
-    favorties: fetchUser.favorties,
-    success: true,
-  };
-
-  handleUserFavoritesResponse(response);
-}
-
-getUserFavorites();

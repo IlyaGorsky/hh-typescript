@@ -1,13 +1,25 @@
 /**
  * Alias
  * @module alias.ts
- * @description Псеводонимы типа создают новое имя для типам
- *              Псевдомиы могут иминовать примитивы, использовать объяедения, кортежи и пересечения.
+ * @description Псевдомиы могут иминовать примитивы, использовать объяедения, кортежи и пересечения.
  *              Создаются с помощью ключевого слова type
  */
+ 
+//  алиасы могут быть анотированы как примитивы
 type Name = string;
+
+//  алиасы могут быть анотированы как функции
 type NameResolver = () => string;
+
+//  алиасы могут быть анонитроованы как объедениие (Union)
 type NameOrResolver = Name | NameResolver;
+
+// Алиасы могут быть анотированы структурно
+type UserProfile = {
+  name: string,
+  id: number,
+  fullName?:string
+}
 
 function getName(n: NameOrResolver): Name {
   if (typeof n === "string") {
@@ -17,37 +29,49 @@ function getName(n: NameOrResolver): Name {
   return n();
 }
 
-/**
- * Псевдоимы типа могут использовать параметры с правой стороны объявления типа
- */
-type UserInput<T> = { value: T };
-
-/**
- * Псевдонимы могут ссылаться сами на себя тем самым делать вложеные структуры
- */
-type Tree<T> = { value: T; left?: Tree<T>; right?: Tree<T> };
-
-let tree: Tree<number> = { value: 1, left: { value: 2 }, right: { value: 3 } };
-
-/**
- * Рекурсия
- * Связанаые списки
- */
-type LinkidList<T> = T & { next?: LinkidList<T> };
-
-interface Person {
-  name: string;
+type ErrorCode = {
+  code: 400;
 }
 
-let people: LinkidList<Person>;
-people = {
-  name: "Ilya",
-  next: {
-    name: "Alex",
-    next: {
-      name: "Danila",
-    },
-  },
-};
-people.name;
-people.next?.name;
+type Data = {
+  data: number[];
+}
+
+//  Алиасы могут быть анотированы как пересечение 
+type ResponseData = Data & ErrorCode;
+
+function someResolever(data: ResponseData) {
+  if (data.code === 400) {
+    throw new Error('Bad request')
+  }
+  return data.data;
+}
+
+{
+  // type Point2d = {
+  //   x: number;
+  //   y: number;
+  // }
+
+  // type Point3d = {
+  //   x: number;
+  //   y: number;
+  //   z: number;
+  // }
+
+  // let point2d: Point2d = {
+  //   x: 1,
+  //   y: 2
+  // }
+
+  // let point3d: Point3d = {
+  //   x: 1,
+  //   y: 2,
+  //   z: 0
+  // }
+
+  // point2d = point3d;
+  // point3d = point2d
+
+}
+ 

@@ -3,111 +3,101 @@
  * @description Фунцкии в ts
  */
 
+{
 
-/**
- * Результат выполнеия функции 
- */
-function printHelloWolrd() :void {
-  console.log("Hello World");
-}
-
-/**
- * Типизация параметра
- */
-function printHelloByName(name: string): void {
-  console.log(`Hello wrold, your name: ${name} !`);
-}
-
-/**
- * Типизация результата
- */
-function getCurrentTime(): number {
-  return Date.now();
-}
-
-/**
- * Значение по умолчанию
- */
-function buildName(firstName = "Will", lastName: string):string {
-  return firstName + " " + lastName;
-}
-let result1 = buildName("Bob"); // error, too few parameters
-let result2 = buildName("Bob", "Adams", "Sr."); // error, too many parameters
-let result3 = buildName("Bob", "Adams"); // okay and returns "Bob Adams"
-let result4 = buildName(undefined, "Adams"); // 
-
-
-/**
- * Опциональный параметр
- */
-function getPriceByCountry(price: number, countryCode?: string): number {
-  if (countryCode === "RU") {
-    return price * 0.5 + price;
+  /**
+   * Типизация параметра
+   */
+  function printHelloByName(name: string) {
+    console.log(`Hello wrold, your name: ${name} !`);
   }
 
-  return price;
+  /**
+   * Типизация результата
+   */
+  function getCurrentTime():number {
+    return Date.now();
+  }
+
+  /**
+   * Значение по умолчанию
+   */
+  function buildName(firstName = "Will", lastName: string):string {
+    return firstName + " " + lastName;
+  }
+  let result1 = buildName("Bob"); // error
+  let result2 = buildName("Bob", "Adams", "Sr."); // error, too many parameters
+  let result3 = buildName("Bob", "Adams"); // okay and returns "Bob Adams"
+  let result4 = buildName(undefined, "Adams"); // 
+
+
+  /**
+   * Опциональный параметр
+   */
+  function getPriceByCountry(price: number, countryCode?: string): number {
+    if (countryCode === "RU") {
+      return price * 0.5 + price;
+    }
+    return price;
+  }
+
+  let res: number = getPriceByCountry(10);
+  getPriceByCountry(12, "RU");
+
+
+  /**
+   * Опциональный параметр литерал
+   */
+  function someFunction(foo: 1, bar?: "bar") { }
+
+  someFunction(1, "bar");
+  // someFunction(2);
+  // someFunctio(1, "baz")
+
+  // Типизрованый spread + tuple
+  function spreadFn(foo, ...rest: [{ id: string }, { id: {} }, ...number[]]) {
+    // rest[0].id + rest[3]
+    rest[1].id + rest[1]
+  }
+
+  // Алиас для функции
+  type SomeFunction = (a: number, b: number) => number
+  let fn2: SomeFunction = (a, b) => a + b;
+
+  // Анотация типа для функции
+  let fn: (a: number, b: number) => number
+  fn = (a, b) => a + b
 }
-getPriceByCountry(10);
-getPriceByCountry(12, "RU");
+
 
 /**
- * Сигнатура функции
+ * Перезагрузка функции (overload)
+ * @name Overload
  */
-type SomeFunction = (a: number, b: number) => number;
-let f: SomeFunction = (a: number, b: number): number => a + b;
-
-var f2: SomeFunction = (a, b) => a + b
-// f(2, "2")
-
-
-interface CountryPrice  {
+{
+  type CountryPrice  = {
     code: string;
     price: number;
-}
-
-/**
- * Перезагрузка функции
- */
-function getDiscountByCountry(price: number): number;
-function getDiscountByCountry(price: number, countryCode: 'RU' | 'EN'): CountryPrice;
-function getDiscountByCountry(price: number, countryCode: string): CountryPrice;
-function getDiscountByCountry(price: number, countryCode?: string) : number | CountryPrice {
-  if (countryCode === "RU" || countryCode === "EN") {
-    let result = { code: countryCode, price: (price / 5) * 100}
-    return result;
   }
 
-  if(countryCode) {
-    let result = {code: countryCode, price}; 
-    return result;
+  function getDiscountByCountry(price: number): number;
+  function getDiscountByCountry(price: number, countryCode: 'RU' | 'EN'): CountryPrice;
+  function getDiscountByCountry(price: number, countryCode: string): CountryPrice;
+  function getDiscountByCountry(price: number, countryCode?: string) {
+    if (countryCode === "RU" || countryCode === "EN") {
+      let result = { code: countryCode, price: (price / 5) * 100}
+      return result;
+    }
+    if(countryCode) {
+      let result = {code: countryCode, price}; 
+      return result;
+    }
+    return price
   }
 
-  return price
+
+  const ua = getDiscountByCountry(10, "UA");
+  const sum = getDiscountByCountry(20)+getDiscountByCountry(20)
+  const discountEN = getDiscountByCountry(10, "EN")
+  const sumRU = getDiscountByCountry(10) + getDiscountByCountry(10, "RU")
 }
-// getDiscountByCountry(20)+getDiscountByCountry(20)
-
-// getDiscountByCountry(10, "EN")
-// getDiscountByCountry(10) + getDiscountByCountry(10, "RU")
-
-
-/**
- * Rest 
- * Типизированый рест
- */
-type Member = {name: string}
-
-function isMember(member: Member): member is Member  {
-  return (<Member>member).name !== undefined
-}
-
-function greeting(communityName:string, ...names:Member[] | string[]):void {
-  if((names as any).some(isMember)) {
-    console.log(`Hello new members ${communityName} community: ${(names as Member[]).map(member => member.name).join(',') }!`)
-  } else {
-    console.log(`Hello new members ${communityName} community: ${names.join(",")}!`)
-  }
-}
-
-greeting('frotned', {name: 'l'})
-greeting('frotned', {fullName: 'l'})
-greeting('backend', 'Ilya')

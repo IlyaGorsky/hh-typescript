@@ -14,22 +14,13 @@ function prinUserFullName(user: IUser): void {
   console.log(`${user.firstName} ${user.lastName}`);
 }
 
-function printUserName(userObj: { firstName: string }) {
-  console.log(userObj.firstName);
-}
-
-var someUser = {
+let someUser = {
   firstName: "Dead",
   lastName: "Pool",
-} as const;
+};
 
-var someArray = [1, 2] as const;
-
-someArray.push(1);
-
-// prinUserFullName({ foo: 123, baz: 456 });
 prinUserFullName(someUser);
-printUserName({ firstName: "Dead" });
+// prinUserFullName({ firstName: "Dead" });
 
 /**
  * Optional Properties
@@ -42,18 +33,13 @@ interface UserConfig {
 }
 
 function createUserConfig(userConfig: UserConfig): { id: string } {
-  const number: number = Math.random();
-  const id: string = number
-    .toString(36)
-    .substr(2, userConfig.age || userConfig.name.length);
-
   return {
-    id,
+    id: 'u1'
   };
 }
 
 createUserConfig({ name: "Ilya" });
-// createUserConfig({ age: 20 });
+createUserConfig({ age: 20, name:"Ilya" });
 
 /**
  * Readonly Properties
@@ -65,7 +51,7 @@ interface IPoint {
   readonly y: number;
 }
 
-var cursor: IPoint = {
+let cursor: IPoint = {
   x: 20,
   y: 20,
 };
@@ -81,19 +67,7 @@ interface SquareConfig {
   width?: number;
 }
 
-function createSquare(config: SquareConfig): { color: string; area: number } {
-  const newSquare = { color: "black", area: 100 };
-
-  if (config.color) {
-    newSquare.color = config.color;
-  }
-
-  if (config.width) {
-    newSquare.area = config.width * config.width;
-  }
-
-  return newSquare;
-}
+function createSquare(config: SquareConfig) {}
 
 createSquare({ color: "20fa", width: 20, opacity: 0.5 });
 //                                          ^^^^^^^^^^^^  does not exist in type SquareConfig
@@ -101,7 +75,7 @@ createSquare({ color: "20fa", width: 20, opacity: 0.5 });
 
 /**
  * Cпособ 1
- * Можно решить эту проблему с помощью  приведением типа
+ * Можно решить эту проблему с помощью  приведением типа (casting type)
  */
 createSquare({ color: "20fa", width: 20, opacity: 0.5 } as SquareConfig);
 
@@ -116,87 +90,115 @@ interface SuperSquareConfig {
   [x: string]: any;
   // ^^^^^^^^^^^^^^^ достаточно
 }
+function createSuperSquare(config: SuperSquareConfig) { }
+createSuperSquare({ color: "20fa", width: 20, opacity: 0.5 });
+
+/**
+ * Способ 3 Стурктурная типизация
+ */
+
+const meaningfulPoint = {
+  opacity: 0.5,
+  color: 'red',
+}; 
+
+const point: SquareConfig = meaningfulPoint; 
 
 /**
  * Function Types
  * @description Интерфейсы способны описывать типы функций
  */
 interface SearchFunc {
-  (source: string, subString: string): boolean;
+  (source: string, subString: string): boolean;  
 }
 
 let mySearch: SearchFunc;
 
-mySearch = function (source: string, subString: string): boolean {
-  let result = source.search(subString);
-  return result > -1;
-};
-
 mySearch = function (src, sub) {
   let result = src.search(sub);
-  return "string";
+  // return 1;
+  return true
 };
 
 /**
  * Extending Interfaces
  * @description Наследование интефрейсов, работает как наследование классов. Череез ключевое слово extends
  */
-type ShapeColor = {
+interface ShapeColor  {
   color: string;
 };
 
-class ShapeColorClass {
-  color: string;
+interface ShapePosition {
+  x: number,
+  color: number
+}
 
+class ShapeColorClass implements ShapeColor {
+  color: string;
   constructor(color: string) {
     this.color = color;
   }
 }
+const someVarColor: ShapeColor = new ShapeColorClass("red");
 
-var someVarColor: ShapeColor = new ShapeColorClass("ted");
-
-// var s =
-
-// someVarColor = s;
-
-interface PenStroke {
-  penWidth: number;
+class ShapeClass implements ShapeColor, ShapePosition {
+  color: string;
+  x: 1;
+  y: 2
 }
+
 
 /**
  * Комбинация интерфейсов
  */
+interface ShapeColor {
+  color: string;
+}
+interface PenStroke {
+  penWidth: number;
+}
 interface Square extends ShapeColor, PenStroke {
   sideLength: number;
 }
 
-let square = {} as Square;
-square.color = "blue";
-square.sideLength = 10;
-square.penWidth = 5.0;
+let square: Square;
+
+square = {
+  color: "blue",
+  sideLength: 10,
+  penWidth: 5
+}
+
+
 
 /**
- * Наследование - не тоже самое что объединение типов
+ * Мержинг интерфейсов
  */
-interface IUserDB {
-  id: number;
-  nickName: string;
+
+interface Car {
+  model: string;
 }
 
-interface ISession {
-  id: number;
-  nickName: boolean;
-  hhid: string;
+interface Car {
+  fuel: boolean
 }
 
-// Такой интерфейс не получится создать, т.к. типы не идентичны
-interface IUserDBSession extends IUserDB, ISession {}
+let bmwCar: Car = {
+  model: 'f30',
+  fuel:true
+}
 
-// Тип можно сделать через объединение, но он будет заведомо неправильным
-type UserSession = IUserDB & ISession;
 
-const userSession: UserSession = {
-  id: 1,
-  hhid: "123abc",
-  nickName: "a", // должно быть never
-};
+// Полезный пример - можно расширять глобальный интерфейс
+interface Window {
+  webkitAudioContext: typeof AudioContext;
+}
+
+const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+
+// type vs interface
+// типа можно реализовать или расширить, только если он представляет объектный тип
+// ( object type ) или пересечение объектных типов со статически известными членами.
+// Кроме того, псевдонимы типов нельзя использовать в таких операциях с типами
+// времени выполнения как typeof и instanceof . Если псевдоним типа будет создан
+// для объекта, то при попытке создать его экземпляр возникнет ошибка.
