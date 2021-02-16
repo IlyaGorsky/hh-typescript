@@ -125,7 +125,9 @@
   
   function getUserFavoritesArticle(response: UserFavoritesResponse) {
     if (!response.Ok) {
-      console.error(response.error.message);
+      if (response.error) {
+        console.error(response.error.message);
+      }
       return false
     }
     const articlesByFavorite = response.favorites.filter(
