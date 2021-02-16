@@ -97,12 +97,12 @@ createSuperSquare({ color: "20fa", width: 20, opacity: 0.5 });
  * Способ 3 Стурктурная типизация
  */
 
-const meaningfulPoint = {
+const redSquare = {
   opacity: 0.5,
   color: 'red',
 }; 
 
-const point: SquareConfig = meaningfulPoint; 
+const point: SquareConfig = redSquare; 
 
 /**
  * Function Types
