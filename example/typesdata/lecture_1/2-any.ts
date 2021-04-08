@@ -5,7 +5,7 @@
  * @description
  */
 // @ts-ignore
-import * as historyLib from "./any_lib";
+import * as historyLib from "../any_lib";
 
 var history = historyLib.default;
 
